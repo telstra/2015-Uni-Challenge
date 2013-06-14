@@ -42,7 +42,7 @@ withDb action =
 
 
 filterText :: T.Text -> T.Text 
-filterText s = T.pack $ subRegex (mkRegex "[^a-zA-Z0-9 .]") (T.unpack s) "" 
+filterText s = T.pack $ subRegex (mkRegex "[^a-zA-Z0-9 .:-]") (T.unpack s) "" 
 
 
 handlePosition :: H ()
