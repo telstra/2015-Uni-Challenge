@@ -52,7 +52,10 @@ handlePosition =
   where
     getPositions = do
       positions <- withDb $ \conn -> Db.listPositions conn 
+      writeText "jsonCallback({\"teams\":" 
       writeJSON positions
+      writeText "})" 
+      modifyResponse $ setContentType "application/javascript" 
       getResponse >>= finishWith . setResponseCode 200 
 
     savePosition = do
@@ -70,7 +73,6 @@ handlePosition =
             let cleanPosition = fmap filterText p  
             savedPosition <- withDb $ \conn -> Db.savePosition conn cleanPosition 
             writeJSON savedPosition  
-
 
 -- | The application's routes.
 routes :: [(ByteString, Handler App App ())]
