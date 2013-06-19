@@ -6,6 +6,7 @@
 -- together and is exported by this module.
 module Site
   ( app
+  , handlePosition    -- Exported to allow testing. 
   ) where
 
 ------------------------------------------------------------------------------
@@ -99,6 +100,6 @@ app = makeSnaplet "app" "An snaplet example application." Nothing $ do
     let conn = sqliteConn $ d ^# snapletValue
     liftIO $ withMVar conn Db.createTables
 
-    addAuthSplices auth
+    addAuthSplices h auth
     return $ App h s d a
 
