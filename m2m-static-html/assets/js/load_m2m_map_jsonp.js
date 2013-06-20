@@ -1,11 +1,12 @@
 //The tutorial used as a guide to develop this script was taken from the Google API library examples
 //Listed here in this link https://developers.google.com/maps/tutorials/customizing/adding-a-legend
 
-var teamArray= [];
+var teamArray = [];
 var markersArray = [];
-var markerCluster= null;
+var markerCluster = null;
 var count = 0;
 var map; 
+
 
 
 var red_url = 'http://maps.google.com/mapfiles/markerA.png';
@@ -19,8 +20,15 @@ var gray_url = 'http://maps.google.com/mapfiles/marker_greyH.png';
 var brown_url = 'http://maps.google.com/mapfiles/marker_brownI.png';
 var red2_url = 'http://maps.google.com/mapfiles/markerJ.png';
 
-var customIconUrl = [red_url,yellow_url,green_url,purple_url,orange_url,white_url,black_url,gray_url,brown_url,red2_url]
-    
+var customIconUrl = [red_url, yellow_url, green_url, purple_url, orange_url, white_url, black_url, gray_url, brown_url, red2_url]
+
+function jsonpCallback(data){
+				teamArray = data.teams;
+                addLegend(map); 
+                addMarker(); 
+			}
+
+
 function initialize() {
 	var Australia = new google.maps.LatLng(-28,135); //Centre of Australia
 	var mapOptions = {
@@ -29,30 +37,20 @@ function initialize() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById('map'), mapOptions);
-	startTimer();
-}
-
-function startTimer(){
-	setInterval(function() {
-		deleteOverlays();//should delete any existing point and clear the cluster
-		addMarker();
-		if (count == 0) {addLegend(map);}
-	},6000); // 5 second refresh
-}
-
-function addMarker() {
 	$.ajax({
 		type: "GET",
 		url: "http://example.innovation.telstra.com/api/position",
 		async: false,
-		jsonpCallback: 'jsonCallback',
+     	jsonpCallback: 'jsonCallback',
 		contentType: "application/json",
 		dataType: "jsonp",
-		success: function(data){
-				teamArray = data.teams;
-			}
-	});							 
+        success: jsonpCallback 
+	});							
+}
+
+function addMarker() { 
 		var teamIndex = 0;                       
+        console.log(teamArray); 
 		teamArray.forEach( function (teamObject) {
 								var teamInfo = new google.maps.InfoWindow({content: '<h1>'+ teamObject.displayString + '</h1>' + 
 																					'<br><p> Latitude:' + teamObject.latitude + ' , ' + 
@@ -79,27 +77,6 @@ function addMarker() {
 		markerCluster = new MarkerClusterer(map, markersArray);			
 }
 
-// Deletes all markers in the array by removing references to them
-function deleteOverlays() {
-  if (markersArray.length > 0) {
-	for (i in markersArray) {
-	  markersArray[i].setMap(null);
-	}
-	markersArray.length = 0;
-  }
-  
-	if(markerCluster!= null) {
-		markerCluster.clearMarkers();
-	}
-}
-// Shows any overlays currently in the array 
-function showOverlays() { 
-	  if (markersArray) { 
-		for (i in markersArray) {
-			markersArray[i].setMap(map);		
-			} 
-		} 
-}
   // Initialize the legend 
 function addLegend(map) {
 	count++;  
@@ -110,13 +87,6 @@ function addLegend(map) {
 	legendContent(legendWrapper, 'Legend'); 
 	} 
 
-  // Update the legend content 
-  function updateLegend(column) { 
-	var legendWrapper = document.getElementById('legendWrapper'); 
-	var legend = document.getElementById('legend'); 
-	legendWrapper.removeChild(legend); 
-	legendContent(legendWrapper, column); 
-  } 
 
   //Generate the content for the legend 
   function legendContent(legendWrapper, column) { 
