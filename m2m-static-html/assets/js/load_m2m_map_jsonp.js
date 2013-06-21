@@ -50,7 +50,6 @@ function initialize() {
 
 function addMarker() { 
 		var teamIndex = 0;                       
-        console.log(teamArray); 
 		teamArray.forEach( function (teamObject) {
 								var teamInfo = new google.maps.InfoWindow({content: '<h1>'+ teamObject.displayString + '</h1>' + 
 																					'<br><p> Latitude:' + teamObject.latitude + ' , ' + 
