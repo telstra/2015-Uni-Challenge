@@ -1,0 +1,21 @@
+/*	
+ *	CSS Styles
+ *	M2M University Challenge
+ *	Telstra Australia
+ *	10/02/2014
+ */
+ 
+
+a		{
+	color: #0088cc;
+	text-decoration: none;
+		}
+		
+h1, h2, h3, h4, h5, h6	{
+  margin: 10px 0;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+						}

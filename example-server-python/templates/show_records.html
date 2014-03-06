@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+{{ super() }}
+  <ul class="container">
+  {% for record in records %}
+    <li><h2>{{ record.time_stamp }}</h2><b>Display String: </b>{{ record.display_string }}<br><b>CPU ID: </b>{{ record.cpu_ID }}<br><b>Lat: </b>{{ record.lat }}<br><b>Lon: </b> {{ record.lon }} 
+  {% else %}
+    <li><em>No data has been posted yet.
+	Records that have been successfully posted will be listed here.</em>
+  {% endfor %}
+  </ul>
+{% endblock %}

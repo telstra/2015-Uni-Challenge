@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Telstra M2M Challenge</title>
+        <link rel="Telstra icon" href="static/images/logo-footer-blue.png">             <!-- Icon next to tabs info -->        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="M2M University Challenge - Getting Started Guide">
+        <meta name="author" content="Telsta">
+
+        <!-- styles -->        
+        <link href="static/css/bootstrap.css" rel="stylesheet">        
+        <link href="static/css/site.css" rel="stylesheet">
+        <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    </head>
+
+    <body onload="initialize()">
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                      <a class="brand" href="http://example.innovation.telstra.com/">M2M@telstra</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+						  <li><a href="http://example.innovation.telstra.com/">Getting started</a></li>
+						  <li><a href="http://example.innovation.telstra.com/#section8.5">FAQ</a></li>
+						  <li><a href="{{ url_for('show_map_unique_cpu') }}">Map</a></li>
+						  <li><a href="{{ url_for('show_map') }}">Basic Map</a></li>
+						  <li><a href="{{ url_for('show_records') }}">Records</a></li>
+                        </ul>
+                        
+                    </div> 
+                    <!--<div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="map.html">M2M Map</a></li>
+                        </ul>
+                        
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1><a name ="contents">Getting Started</a></h1>
+
+            <h3> Table of Contents </h3>
+            <ol>
+                <li><a href="#section1"> Introduction </a></li>
+                <ol type="i"> 
+                    <li><a href="#section1.1">Before You Start</a></li>
+                    <li><a href="#section1.2">Aim Of This Guide</a></li>
+					<li><a href="#section1.3">Version Release Notes</a></li>
+                </ol>
+                <li><a href="#section2"> Setting up your Raspberry Pi&#174; </a></li>
+                <ol type="i">
+                    <li><a href="#section2.1">Intro into the Raspberry Pi&#174;</a></li>
+                    <li><a href="#section2.2">Setting up your Raspberry Pi&#174; with a monitor and keyboard</a></li>
+                    <li><a href="#section2.3">Connect to the Internet</a></li>
+                </ol>
+                <li><a href="#section3"> Connecting and using the Raspberry Pi&#174; Camera </a></li>
+                <ol type="i">
+                    <li><a href="#section3.1">Intro into the Raspberry Pi&#174; Camera</a></li>
+                    <li><a href="#section3.2">Installing a configuring the Raspberry Pi&#174; Camera</a></li>
+                    <li><a href="#section3.3">Raspistill</a></li>
+                    <li><a href="#section3.4">Raspivid</a></li>
+                </ol>
+                <li><a href="#section4"> Connecting and using the PiFace Digital Module </a></li>
+                <ol type="i">
+                    <li><a href="#section4.1">Intro to PiFace Digital</a></li>
+                    <li><a href="#section4.2">Installing and configuring the PiFace Digital Module</a></li>
+                    <li><a href="#section4.3">Inputs/Outputs</a></li>
+                </ol>
+                <li><a href="#section5"> Connect BigPond&#174; Mobile Wi-Fi 4G Router </a></li>
+                <ol type="i">
+                    <li><a href="#section5.1">Connect using the BigPond&#174; Mobile Wi-Fi 4G Router</a></li>
+                    <li><a href="#section5.2">Send GPS coordinates to the server and display your position on a Google map</a></li>
+                </ol>
+                <li><a href="#section6"> Setting up the Virtual Machine </a></li>
+                <ol type="i">		
+                    <li> <a href="#section6.1">Get your VM</a></li>
+                    <li> <a href="#section6.2">Create an unprivileged user </a></li>
+                    <!--<li> <a href="#section6.3">Installing and configuring your web server on your VM </a></li> -->
+                    <li> <a href="#section6.4">Clone the application server code to your VM</a> </li>
+                    <li> <a href="#section6.5">Build your webserver on your VM</a></li>
+                    <li> <a href="#section6.6">Send data from your Raspberry Pi&#174; to your VM</a></li>
+                </ol>
+                <!--<li><a href="#section7"> Putting it all together </a></li>-->
+                <li><a href="#section8"> Supporting Material </a></li>
+                <ol type="i">	
+                    <li><a href="#section8.1">Setup remote connection to your Raspberry Pi&#174 via SHH </a></li>
+                    <li><a href="#section8.2">Git, and the first steps with a GitHub account</a></li>
+                    <li><a href="#section8.3">Technical Documents & Support</a></li>
+                    <li><a href="#section8.4">Troubleshooting Guide </a></li>
+                    <ol type ="a">
+                        <li><a href="#section8.4.1">Using remote access for Raspberry Pi&#174; initial set up</a></li>
+                        <li><a href="#section8.4.2">Loading the Raspbian Operating System on a SD card</a></li>
+                        <li><a href="#section8.4.3">Configure your Raspberry Pi&#174;</a></li>
+                        <li><a href="#section8.4.4">Check serial port with Minicom</a></li>
+                        <li><a href="#section8.4.5">Configuring the BigPond&#174; Mobile Wi-Fi 4G Router</a></li>
+                    </ol>
+                    <li><a href="#section8.5">Frequently Asked Questions</a></li>
+                </ol>
+            </ol>
+            <ol>
+                <li><h3><a name ="section1"> Introduction </a></h3></li>		
+                <ol type="i">	
+                    <li>    <!--  s1.1 Before you Start  -->
+                        <h3><a name ="section1.1">Before you Start </a></h3> 
+                        <p>
+                            This document aims to serve as a guide to individuals of a range of technical skill levels. Please complete it at your own pace and take as much time 
+                            as you need. If you believe you are competent in some areas of the guide, you may skip over them. However this guide does contain code that 
+                            will be critical to connecting to some components, like the 4G router and VM server. So it is advisable to go through all sections.                           
+                        </p>
+                        <p>The kit that will be provided by Telstra will include:</p>
+                        <ul>
+                            <li>Raspberry Pi&reg; - Model B</li>
+                            <li>PiFace Digital – board, I/O expansion</li>
+                            <li>BigPond&#174; Mobile Wi-Fi 4G router and USB cable</li>
+                            <li>8GB SD card preloaded with Raspbian</li>
+                            <li>Telstra 4G USIM card</li>
+                            <li>2m HDMI - DVI cable</li>
+                            <li>1A Power Supply</li>
+                            <li>VM server account</li>
+                            <li><i><b>OPTIONAL</b> at teams/universities request: Raspberry Pi&reg; 5MP camera board</i></li>
+                        </ul>
+                        <br>
+                        <p>The following equipment is required and is to be provided by teams/universities: </p>
+                        <ul>
+                            <li>Compatible keyboard</li>
+                        </ul>
+                        <br>
+                        <p>The following equipment is recommended and is to be provided by teams/universities:</p>
+                        <ul>
+                            <li>Compatible powered USB hub</li>
+                            <li>Compatible mouse</li>
+                            <li>Monitor</li>
+                        </ul>
+                    </li>
+                    <li>   <!--  s1.2 Aim of this guide  --> 
+                        <h3><a name ="section1.2">Aim of this guide </a></h3> 
+                        <p> Writing a Machine-To-Machine (M2M) application can be daunting.  The purpose of this tutorial is to step you through the setup of a Raspberry 
+                            Pi&#174; & Camera, the PiFace Digital Module, BigPond&#174; Mobile Wi-Fi 4G router, and Remote Virtual Machine (VM). You are free to use any of the code that Telstra 
+                            provides, and please suggest bug fixes where necessary.
+                        </p>
+                        <p>Discussion and collaboration between teams is encouraged through the use of GitHub. Although it is important not to reveal your idea or solution, 
+                            where there is group benefit (e.g. improvements to the collaborative code provided by Telstra) then the teams are urged to contribute. GitHub 
+                            will be introduced later.
+                        </p>
+                        <p>This tutorial will help you:</p>
+                        <ul>
+                            <li>Set up your Raspberry Pi&#174; and Camera;</li>
+                            <li>Set up the PiFace Digital Module;</li>
+                            <li>Get wireless connectivity working using a BigPond&#174; Mobile Wi-Fi 4G router;</li>
+                            <li>Run the provided sample GPS client;</li>
+                            <li>Set up a VM server.</li>
+                        </ul>
+                        <br>
+                        <p>The diagram below shows the elements you will interact with during this tutorial. </p> 
+                        <ul> 
+                            <li> The <b> Raspberry Pi&#174; </b> is a small computer which has standard I/O ports to allow you to connect external devices that you may 
+                            need for your solution. The <b> BigPond&#174; Mobile Wi-Fi 4G </b> router provides wireless connectivity to transfer data. 
+                            The BigPond&#174; Mobile Wi-Fi 4G router has an inbuilt GPS chip, which during this tutorial, we will use to acquire and transmit GPS data. </li><br> 
+
+                            <li> A <b> VM server </b> inside Telstra's Cloud Innovation Centre running Linux, is provided to you to support your application being developed on the 
+                            Raspberry Pi&#174;. In the example application, this VM server is configured to do two things:
+                            <ol> 
+                                <li> Receive GPS co-ordinates, and team name submitted via JSON requests from the Raspberry Pi&#174; </li> 
+                                <li> Provide a complete list of GPS co-ordinates most recently received for each Raspberry Pi&#174; that has reported GPS data </li>
+                            </ol> 
+                            <p>These two functions make it possible for the server to provide a map illustrating the locations of each of the devices. This is 
+                                provided using Google Maps, which is hosted on the <a href = "http://www.telstra.com/universitychallenge" target="_blank"> M2M Challenge website</a>.
+                            </p>
+                            </li> 
+                        <li> <b> GitHub </b> is a website that allows you to share source code.  Telstra has a repository on GitHub that contains the Telstra example 
+                            client collaborative code and example server code.
+                        </li> 
+                    </ul>
+                    </li>
+                    <li>
+                        <h3><a name ="section1.3">Version Release Notes</a></h3>
+                        <table width="100%" cellpadding="5" border="1">
+                            <tr>
+                                <th width="200">GSG Version</th>
+                                <th width="200">Release Date</th>
+                                <th>Notes</th>
+                            </tr>
+                            <tr>
+                                <td>1.0</td>
+                                <td></td>
+                                <td>Initial Release</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <br>
+                    <img src="./static/images/pi_overview.png" alt="scope" width="75%" height="75%">
+                    <br>
+                    <p>The Getting Started guide is written from the perspective of using a monitor and keyboard directly connected to the Raspberry Pi&#174;.  
+                        Alternatively you might prefer to set up the Raspberry Pi&#174; remotely by SSHing to the device.   One advantage of the former approach is that 
+                        losing network connectivity does not affect your ability to configure the device. This can be useful when starting out with the Raspberry Pi&#174;.  
+                        If you do choose to set up your Raspberry Pi&#174; over SSH, you might like to skip ahead to <a href ="#section2.3">Section 2.iii:</a> Connect to the 
+                        internet and refer to <a href ="#section8.1">Section 7.i </a> for SSHing information if required and to the Troubleshooting section at the end 
+                    </p>
+                    <p>During the pre-challenge period Telstra will provide support to teams to ensure they can complete the Getting Started guide, but no other technical support.  
+                        Once the challenge commences on the 7th of April, additional technical support is provided.  Technical questions can be shared via GitHub or 
+                        emailed directly to Telstra via the <a href = "mailto:telstrauniversitychallenge@team.telstra.com">support email address</a>. </p>
+                        </li>
+                   </ol>
+                <li><h3><a name ="section2"> Setting up your Raspberry Pi&#174; </a></h3></li>
+                <ol type ="i">
+                    <li><h3><a name ="section2.1">Intro to the Raspberry Pi&#174; </a></h3> 
+                        <p>
+                            The Raspberry Pi&reg; is a small computer that has standard I/O ports to allow the connection of external components that may be needed for your 
+                            solution. The Raspberry Pi&reg; is capable of doing most basic activities you would expect from a computer, from creating and working with spreadsheets, 
+                            to playing and recording high definition video files.
+                        </p>
+                    </li>
+                    <li>	  
+                        <h3><a name ="section2.2"> Setting up your Raspberry Pi&#174; with a monitor and keyboard</a></h3>	
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Take care when handling static sensitive equipment and always ensure that all power connectors are disconnected when 
+                            adding or removing components.
+                        </div>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> A powered USB hub may be useful here.  We have found that the Raspberry Pi&#174; cannot drive a mouse, keyboard, and the 
+                            BigPond&#174; USB 4G dongle simultaneously.  A powered USB hub can be used to get around this.
+                        </div>
+                        <p> Connect all the cables as shown in this <a href = "http://www.raspberrypi.org/quick-start-guide" target="_blank"> official quick start guide</a>.  The SD card 
+                            provided has a copy of the required Raspbian Operating System ISO image written to it.</p>
+
+                        <p> On first booting up your Raspberry Pi&#174; you should see the raspi-config screen.  In this tutorial we shall be using the graphical desktop.  
+                        </p>
+                        <br>
+                        <img src="./static/images/1-1.png" alt="raspi-config" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <P>
+                            To enable to boot into the graphical desktop, select option <code>3 - Enable Boot to Desktop/Scratch</code> and press <b>Enter</b>. Select the option <code>Desktop log in as user
+                                'pi' at the graphical desktop</code> and then press <b>Enter</b>.
+                        </P>
+                        <P>
+                            Next we need to select option <code>4 - 'Internationalisation Options</code> so we can change the keyboard layout from the British standard. At the menu select the option 
+                            <code>Change Keyboard Layout</code>. If you can find your keyboard model in the list, select that, otherwise we will use the generic selection:
+                        </p>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> In our testing, we noted that you may experience a pause between pressing <b>Enter</b> and the option screen changing.
+                        </div>
+                            <ol>
+                                <li>Find the option <code>Generic 104-key PC</code> and press <b>Enter</b>.</li>
+                                <li>Select the option <code>Other</code> and press <b>Enter</b>.</li>
+                                <li>Select the option <code>English - US</code> and press <b>Enter</b></li>
+                                <li>Select the option <code>English - US</code> and press <b>Enter</b></li>
+                                <li>Press <b>Enter</b></li>
+                                <li>Press <b>Enter</b></li>
+                                <li>Press <b>Enter</b></li>
+                            </ol>
+                        <br>
+                        <P>
+                            Select the option <code>Finish</code> and press <b>Enter</b>, and then <b>Enter</b> again.
+                        </p>                     
+
+                        <img src="./static/images/rpi-desktop.jpg" alt="rpidesktop" width="40%" height="40%">
+                    </li>
+                    <br>
+
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> If for some reason the operating system doesn't load or if you have an extra SD card which you wish to load the Raspbian
+                        Operating System image onto, please refer to <a href = "#section8.4.2">Loading the Raspbian Operating System on a SD card </a> in the Troubleshooting guide.
+                    </div>
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> If you would like help to configure your keyboard, SSH password and local time on your device please go to 
+                        <a href = "#section8.4.3">Configure your Raspberry Pi&#174; </a> in the Troubleshooting guide.
+                    </div>
+
+                    <li>
+                        <h3><a name ="section2.3"> Connect to the Internet</a></h3>
+
+                        <p>Our first step will use the built-in Ethernet to connect to the internet so we can retrieve the Python scripts from GitHub in the future steps.  We will later use the scripts that are fetched 
+                            to activate the Wireless interface.   
+                        </p>
+                        <img src="./static/images/ethernet_pi.jpg" alt="ethernet_pi" width="40%" height="40%">
+
+                        <p>Open the <i>LXTerminal</i> by locating the icon on the Raspbian desktop and executing it to show the picture below. </p> 
+
+                        <img src="./static/images/lxterminal.jpg" alt="lxterminal" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> On a Raspberry Pi&#174; / keyboard combination that we tested, the keyboard map was incorrectly set, which caused
+                            incorrect characters to display when typing.  If you have a similar issue, you can use the following command to manually set the keyboard 
+                            map to 'us' as well as permanently configure through raspi-config.
+                            <pre class=" gutter: false"> pi@raspberrypi ~ $ setxkbmap us </pre>
+                        </div>	 
+
+                        <p>Use the <i> ifconfig </i> command to list the interfaces which are active on your Raspberry Pi&#174;</p>
+
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ ifconfig	  
+                        </pre>  
+
+                        <p>On our Raspberry Pi&#174;, under Raspbian, the <i>eth0</i> interface corresponded to the wired ethernet port.   
+                            After connecting an Ethernet cable to the Raspberry Pi&#174; (assuming there is a DHCP server on your network) your Raspberry Pi&#174; should 
+                            request and recieve an address automatically.  <i>eth0</i> needs to recieve an ip address (the example in the figure below is 192.168.20.100). 
+                            If an IP address is shown then, congratulations, you are now connected to the internet! 
+                        </p>
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> If you are using your university LAN connection, you may encounter that you cannot establish and internet connection. 
+                            This could be because your university has a firewall restricting access. You may need to try a internet connection at home or try using your 
+                            BigPond&#174; Mobile Wi-Fi 4G router. To use your BigPond&#174; Mobile Wi-Fi 4G router, ensure that it is connected to the Raspberry Pi&reg;, powered on and 
+                            connect to the internet. To connect the Raspberry PI&reg; to the internet, we write the following command into the <i>LXTerminal</i>.
+                            <pre class=" gutter: false">
+pi@raspberrypi ~ $ sudo dhclient wwan0	  
+                        </pre>  
+                        </div>
+                        <pre> 
+eth0      Link encap:Ethernet  HWaddr b8:27:eb:4b:5e:22 
+      inet addr:192.168.20.100  Bcast:192.168.20.255  Mask:255.255.255.0 
+      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+      RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+      TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+      collisions:0 txqueuelen:1000 
+      RX bytes:1890 (1.8 KiB)  TX bytes:200 (200.0 B)
+
+lo        Link encap:Local Loopback  
+      inet addr:127.0.0.1  Mask:255.0.0.0
+      UP LOOPBACK RUNNING  MTU:16436  Metric:1
+      RX packets:5 errors:0 dropped:0 overruns:0 frame:0
+      TX packets:5 errors:0 dropped:0 overruns:0 carrier:0
+      collisions:0 txqueuelen:0 
+      RX bytes:1000 (1.0 KiB)  TX bytes:1008 (1.0 KiB)
+                        </pre> 
+                        <p>
+                            We now need to ensure we update the repository database on the Raspberry Pi&reg;. 
+                            In the <I>LXTerminal</I> enter the following command. Press <b>Y</b> and <b>Enter</b> if prompted.
+                        </p>
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ sudo apt-get update	  
+                        </pre>  
+                        <p>
+                            Next we will upgrade all current packages on the the Raspberry Pi&reg; to the latest 
+                            version. Enter the following command into the <i>LXTerminal</i>,  pressing <b>Y</b> and <b>Enter</b> if prompted.                           
+                        </p>
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ sudo apt-get upgrade	  
+                        </pre>
+                        <p>
+                            Next we need to install some python packages on the the Raspberry Pi&reg; to run the example 
+                            python scripts. Enter the following command into the <i>LXTerminal</i>,  pressing <b>Y</b> and <b>Enter</b> if prompted. 
+                        </p>
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ sudo apt-get install python-lockfile
+                        </pre> 
+
+                    </li>
+                </ol>
+                <li><h3><a name="section3"> Connecting and using the Raspberry Pi&#174; Camera</a></h3></li>
+                <ol type="i">
+                    <li>
+                        <h3><a name="section3.1">Intro to the Raspberry Pi&#174; Camera</a></h3>
+                        <p>
+                            The Raspberry Pi&#174; Camera is a custom camera board add-on for the Raspberry Pi&#174; computer. It uses the 
+                            dedicated CSi interface on the Raspberry Pi&reg; specifically designed for camera usage, and has a 5 megapixel sensor capable of 
+                            capturing images at 2592x1944 and shooting video in 1080p at 30 fps and 720p at 60 fps (frames per second). 
+                        </p>
+                    </li>
+                    <li>
+                        <h3><a name="section3.2">Installing and setting up the Raspberry Pi&#174; Camera</a></h3>
+                        <p>
+                            To install the Raspberry Pi&#174; Camera, please follow the video tutorial 
+                            <a href = "http://www.raspberrypi.org/camera" target="_blank">here</a>.
+                        </p>
+                        <p>
+                            To enable the the camera, open the <i>LXTerminal</i> and type the following command to bring up the configuration options 
+                            for the Raspberry Pi&#174;.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo raspi-config 
+                        </pre>
+                        <p>
+                            Scroll down using the keyboard to selection option <code>5 - Enable Camera</code> and press <b>Enter</b>.
+                        </p>
+                        <img src="./static/images/3-2-1.png" alt="Enabling the camera_1" width="40%" height="40%">
+                        <p>
+                            Select the <code>Enable</code> option and press <b>Enter</b>. 
+                        </p>
+                        <img src="./static/images/3-2-2.png" alt="Enabling the camera_2" width="40%" height="40%">
+                        <P>
+                            Scroll down to <code>Finish</code> and when prompted if you would like to reboot, select <code>Yes</code>.
+                        </P>
+                    </li>
+                    <li>
+                        <h3><a name="section3.3">Raspistill</a></h3>
+                        <p>
+                            Raspistill is a command line application that can be used to capture still images. In this guide we talk about some basic 
+                            operations and functions that you may need for your solution.
+                        </p>
+                        <P>
+                            To view all the commands available for raspistill, open the <i>LXTerminal</i> and type the following command.
+                        </P>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspistill 
+                        </pre>
+                        <img src="./static/images/3-3-1.png" alt="raspistill" width="40%" height="40%">
+                        <P>
+                            We can start with something simple. To use the camera to preview the image, we can type the following command.
+                        </P>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> The default time elapsed for the raspistill and raspivid commands is five seconds. To 
+                            shorten or lengthen the time, add the <code>–t</code> command followed by the desired time in milliseconds to the 
+                            end of your command. 
+                        </div>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspistill -fp -t 10000
+                        </pre>
+                        <p>
+                            We can also save a picture to a particular file name in a specified location or we can change the image 
+                            resolution and format. We can use the following command for this. 
+                        </p>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> The default file location is /home/pi 
+                        </div>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> The image is taken after the last frame of the preview. 
+                        </div>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspistill –t 5000 –o test.png –e png –w 640 –h 480
+                        </pre>
+                    </li>
+                    <li>
+                        <h3><a name="section3.4">Raspivid</a></h3>
+                        <p>
+                            Raspivid is a command line application that can be used to capture videos encoded in h.264 and in 
+                            1920x1080 resolution. In this guide we talk about some basic operations and functions that you may need 
+                            for your solution.
+                        </p>
+                        <p>
+                            To view all the commands available for raspivid, open the <i>LXTerminal</i> and type the following command.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspivid
+                        </pre>
+                        <img src="./static/images/3-4-1.png" alt="raspivid" width="40%" height="40%">
+                        <p>
+                            We can start by using the preview command. Open <i>LXTerminal</i> and enter the following command. This gives us a 
+                            five second preview of the video and can be used for positioning the camera.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspivid -f
+                        </pre>
+                        <p>
+                            We can change the time that the preview lasts by using the <code>–t</code> command followed by a value in milliseconds after it.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspivid -f -t 10000
+                        </pre>
+                        <p>
+                            To save your videos to specific file locations and names, we use the <code>–o</code> command. Enter the following command into 
+                            the <i>LXTerminal</i> to produce a ten second video called test.h264 in the default location.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ raspivid –t 10000 –o test.h264
+                        </pre>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> To play a .h264 file from the default location, in the <i>LXTerminal</i> enter the following command.
+                            <pre class="gutter: false">
+pi@raspberrypi ~ $ omxplayer filename.h264
+                            </pre>
+                        </div>
+                        <p>
+                            Please consult the Raspiberry Pi&#174; camera documentation in <a href="#section8.3">section 7.3</a> of this guide for more examples and a detailed list 
+                            of all the functions and features associated with the camera.
+                        </p>
+                    </li>
+                </ol>
+                <li><h3><a name="section4"> Connecting and using PiFace Digital</a></h3></li>
+                <ol type="i">
+                    <li><h3><a name="section4.1">Intro to PiFace Digital</a></h3>
+                        <p>
+                            The PiFace Digital is a digital input/output device that connects directly to the GPIO (General Purpose Input/Output) port on the 
+                            Raspiberry Pi&#174 board. It’s capable of reading in eight digital inputs and out putting eight digital outputs that 
+                            link to onboard LED. The first two outputs also switch two 20V 5A relays, which will gives a greater amount of 
+                            flexibility when creating your solution.
+                        </p>
+                    </li>
+                    <li><h3><a name="section4.2">Installing and setting up the PiFace Digital</a></h3>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> It is recommended that if you have the Raspberry Pi&#174; Camera in your kit, that it is installed 
+                            before installing PiFace Digital.
+                        </div>
+                        <p>
+                            To install PiFace Digital, we start by enabling SPI (Serial Peripheral Interface)on the Raspiberry Pi. Open <i>LXTerminal</i> and enter the configuration menu 
+                            by entering the following command.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo raspi-config
+                        </pre>
+                        <img src="./static/images/4-2-1.png" alt="raspistill" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <p>
+                            Next, select option <code>8: Advanced Options</code>
+                        </p>
+                        <br>
+                        <img src="./static/images/4-2-2.png" alt="raspistill" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <p>
+                            Then select option <code>5: Enable SPI</code>
+                        </p>
+                        <br>
+                        <img src="./static/images/4-2-3.png" alt="raspistill" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <p>
+                            Then select <code>Yes</code> and exit the configuration menu.
+                        </p>
+                        <br>
+                        <p>
+                            To install, the PiFace Digital module simply sits on top of the Raspberry Pi&#174; connecting to the GPIO ports, as shown in the picture below.
+                        </p>
+                        <img src="./static/images/4-2-4.png" alt="raspistill" width="40%" height="40%">
+                        <p>
+                            Next we need to install the Piface Digital libraries for Python2 and Python3, enter into the <i>LXTerminal</i> the following command.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo apt-get install python{,3}-pifacedigitalio
+                        </pre>
+                        <p>
+                            If prompted, press <b>Y</b> and <b>Enter</b>.
+                        </p>
+                        <p>
+                            You can use the emulator to read the inputs and operate the outputs on the board real time for debugging. 
+                            Start installing the emulator by entering into the <i>LXTerminal</i> the following command.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo apt-get install python3-pifacedigital-emulator
+                        </pre>
+                        <p>
+                            If prompted, press <b>Y</b> and <b>enter</b>.
+                        </p>
+                        <p>
+                            To open the emulator, either open the <i>PiFace Emulator</i> application on the desktop or in the <i>LXTerminal</i>
+                            enter the following command.
+                        </p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ pifacedigital-emulator
+                        </pre>
+                        <p>
+                            You can enable or disable manipulating inputs by selecting the <code>Enable</code> option at the top left of the program. You can manually switch outputs 
+                            by selecting the corresponding number at the bottom of the program. You can also simulate digital inputs by pressing the buttons on the PiFace Digital Module.
+                        </p>
+                        <img src="./static/images/4-2-5.png" alt="raspistill" width="40%" height="40%">
+                    </li>
+                    <li><h3><a name="section4.3">Inputs/Outputs</a></h3>
+                        <p>
+                            To start using the PiFace Digital module, you can open either <i>IDLE</i> or <i>IDLE 3</i> off the desktop for writing and editing the 
+                            programming code in python2 or python3 respectably. For this example we will use python3. So open the <i>IDLE 3</i> 
+                            application on the desktop, and then under the <code>File</code> option at the top, click on <code>New Window</code>. You should now 
+                            have two windows open. The window titled <i>Untitled</i> is your workspace. It is the document you will write and run 
+                            your code in. The other window, titled <i>Python Shell</i>, is where the results and debugging information will be presented
+                        </p>
+                        <img src="./static/images/4-2-6.png" alt="raspistill" width="80%" height="80%">
+                        <p>
+                            The guide will go through all the relevant lines in the programming code and show the finished product at the end of this 
+                            section. We assume the user has some basic programming experience and python experience.
+                        </p>
+                        <p>
+                            Our first step is to import the PiFace Digital library into our workspace. So we begin by writing the line.
+                        </p>
+                        <pre class="gutter: false">
+import pifacedigitalio as p
+                        </pre>
+                        <p>
+                            This line will import the PiFace Digital library and from now on we can use the letter <code>p</code> to reference it.
+                        </p>
+                        <p>
+                            The next step is to initialize the Piface Digital Module. As we have a instance of the PiFace Digital library imported 
+                            to this workspace as the letter <code>p</code>, we just enter the following.
+                        </p>
+                        <pre class="gutter: false">
+p.init()
+                        </pre>
+                        <p>
+                            Our final step is about using either the <code>digital_read()</code> or <code>digital_write()</code> functions. With both functions, 
+                            we can pass two real numerical variables through them corresponding to the <i>pin_number</i> (values of 0 to 7) and <i>state</i> 
+                            (either 0 or 1). They both have the format <code>digital_read(pin_number, state)</code> or <code>digital_write(pin_number, state)</code>. 
+                        </p>
+                        <p>
+                            For the next example we will write a digital high or 1 to the first pin out or pin 0.   
+                        </p>
+                        <pre class="gutter: false">
+p.digital_write(0,1)
+                        </pre>
+                        <p>
+                            To run the program, click on the <code>Run</code> tab at the top of the window, then click on <code>Run Module</code>.                        
+                        </p>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> You will notice that this will flip the contacts on the relay and turn on the LED. The contacts on relay k0 
+                            and k1 are trigger by writing a high to output pins 0 and 1 respectively. Each output is hardwired to a corresponding LED, and when a digital high or '1' is written to the the output, its LED is also turned on.   
+                        </div>
+                        <p>
+                            The following example brings together all we have learned in this section. It will loop and turn on LED0 and switch the K0 relay for one second and turn it off for one second indefinitely.
+                        </p>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> The timer library is standard in the python package. To see more about the standard packages, there 
+                            is a python section in the supporting material section <a href="#section8.3">here</a>.  
+                        </div>
+                        <pre>
+import pifacedigitalio as p	#import the piface library
+from time import sleep		#import the sleep function
+p.init()			#initialise the piface module
+while(True):
+	sleep(1)		#sleep for one second
+	p.digital_write(0,1)	#set the output at pin 0 to high
+	sleep(1)		#sleep for one second
+	p.digital_write(0,0)	#set the output at pin 0 to low
+                        </pre>
+                        <p>
+                            To exit the infinite loop, press <b>Control</b>+<b>C</b> on the keyboard.
+                        </p>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> You can also write and execute commands to operate the PiFace in <i>LXTerminal</i>, tho it can become 
+                            tedious if the code is more than a few lines.
+                        </div>
+                    </li>
+                </ol>                        
+                <li><h3><a name ="section5">Connect BigPond&#174; Mobile Wi-Fi 4G router</a></h3></li>
+                <ol type="i">
+                    <li><h3><a name="section5.1">Connect using the BigPond&#174; Mobile Wi-Fi 4G router</a></h3>
+                        <p>Insert the SIM into the BigPond&#174; Mobile Wi-Fi 4G router. If you are unsure how to do this there is a booklet with 
+                            the router that shows you how to insert the SIM.  
+                        </p>
+                        <div class="alert alert-error">
+                            <strong>Warning</strong> The SIM PIN has been removed, to enable or disable please refer to the <a href="#section8.4.5"> troubleshooting guide</a>. 
+                        </div>
+                        <p>Then connect the BigPond&#174; Mobile Wi-Fi 4G router to the Raspberry Pi&#174; USB port. You may not have enough ports to accommodate three USB connections so a powered USB hub is useful here. 
+                            Alternatively you can disconnect the mouse to continue with the guide. </p>
+                        <p>
+                            To continue we will still need the ethernet connection plugged in to download the scripts for the modem.
+                        </p>
+                        <div class="alert alert-error">
+                            <strong>Warning</strong> Take care when connecting and disconnecting devices to the Raspberry Pi&#174;.  
+                            In our testing, our Raspberry Pi&#174; rebooted upon connecting the BigPond&#174; Mobile Wi-Fi 4G router, so you may want to check that your 
+                            work is saved.  
+                        </div>
+                        
+                        <img src="./static/images/ethernet_4g_without_ethernet.jpg" alt="ethernet_4g_without_ethernet" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <div class="alert alert-error">
+                            <strong>Warning</strong> If your unfamiliar with using GitHub, please go through the Getting Started with GitHub guide in the resources section of the guide found <a href="#section8.2">here.</a>
+                        </div>
+                        <p> The next step is to enable your wireless connection by downloading the sample client from Git.</p>  
+
+                        <p> First, update the system's package database, install python serial library and the git command line client. </p> 
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo apt-get update 
+
+pi@raspberrypi ~ $ sudo apt-get install python-serial
+
+pi@raspberrypi ~ $ sudo apt-get install git [press 'enter']
+
+pi@raspberrypi ~ $ git clone https://github.com/telstra/m2m-university-challenge.git [type 'yes' if prompted]
+                        </pre>
+
+
+                        <p>You should now have a local instance of our client, and server repository on your Raspberry Pi&#174;. You can check this by typing the following command:</p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ cd m2m-university-challenge; ls  
+                        </pre>
+
+                        <p> The output from the command above should include the folders listed below: </p>
+
+                        <pre class="gutter: false">
+example-client-python&nbsp;&nbsp;example-server-python&nbsp;&nbsp;m2m-static-html&nbsp;&nbspREADME.md
+                        </pre>
+
+                        <p> You now have a local git repository in the folder <i> m2m-university-challenge</i>, where you can modify all the source code.</p>
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> At this point you may have the Ethernet port and BigPond&#174; Mobile Wi-Fi 4G router connected simultaneously. 
+                            While there are tools in Linux to handle multiple interfaces, this solution is currently out of scope for this tutorial (However, as a 
+                            challenge, your welcome to try yourselves!). Hence, for the remainder of this tutorial, we recommend that you disconnect the Ethernet 
+                            port and ONLY leave the BiBigPond&#174; Mobile Wi-Fi 4G router connected! 
+                            </p>  
+                        </div>                    
+                        <p>In <i>LXTerminal</i>, type the following commands</p>
+                        <pre class="gutter: false">
+pi@raspberrypi ~/m2m-university-challenge $ cd example-client-python; ls 
+                        </pre>
+
+                        <p> See the script called <i> M2MConnect.py </i> </p>
+
+                        <pre class="gutter: false">
+gpsclient.py&nbsp;&nbsp; M2Mconnect.py
+                        </pre>
+
+                        <p> The python script above provides an example of how you can: </p>
+                        <ol>
+                            <li>Turn on your BigPond&#174; Mobile Wi-Fi 4G router. </li>
+                            <li>Assign the correct APN to the device so that it can be publicly accessible. </li>                            
+                        </ol>
+                        <br>
+
+                        <p> To launch the script, script type: </p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi ~/m2m-university-challenge/example-client-python $ sudo python M2Mconnect.py 
+                        </pre>
+
+                        <p> Where the following response should be:</p>
+
+                        <pre class="gutter: false">	
+[ -- ] System Initiating Connection Check
+[ OK ] No IP address on eth0
+[ OK ] No wlan0 interface detected
+[ -- ] Checking Modem Present
+[ -- ] Sending AT command: ATE1
+[ OK ] RaspberryPi wwan0 connected with IP address 192.168.2.2
+[ OK ] Modem connected with IP address 123.209.8.45
+[ -- ] Public IP Range
+[ -- ] Checking if Modem IP Changed
+cat: /root/.current_ip: No such file or directory
+[ -- ] New wwan0 IP address 123.209.8.45
+[ OK ] System IP Connection Complete
+*****************************
+                        </pre>
+
+                        <p>If you get the response above, it means that the USB port where the BigPond&#174; Mobile Wi-Fi 4G router is connected (<i>wwan0</i>) is configured 
+                            with an Access Point Name (APN) of <font face="courier">telstra.extranet </font> and has established a connection to the internet.
+                        </p>
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> If at this stage you're having connection problems it may be worth checking:
+                            <ul>
+                                <li> Whether the serial port is configured correctly.  You may wish to <a href = "#section8.4.4"> Check the serial port with Minicom</a> in the 
+                                    Troubleshooting section.
+                                </li>
+                                <li> If the APN is configured correctly.  Please see <a href = "#section8.4.5"> Trouble configuring your APN</a> in the Troubleshooting section.</li>
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> If your device disconnects from the network, on your next power up to attach to the network it is likely to be 
+                            assigned a new IP address.  In the following steps, you will configure a Virtual Machine.  You may wish to configure your Raspberry 
+                            Pi&#174; to report its IP address to the VM periodically, since the VM's IP address will remain constant, allowing you to locate the 
+                            address of the Raspberry Pi&#174; as it varies.  
+                        </div>
+
+                        <p>You can verify that you are connected by typing the following code in the <i>LXTerminal</i>. </p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi ~/m2m-university-challenge/example-client-python $ ifconfig
+                        </pre>
+
+                        <img src="./static/images/ifconfig_new.png" alt="wwan0_connected" width="60%" height="60%">
+
+                        <p>You should have the same IP address against <i>wwan0</i> which has been assigned to your BigPond&#174; Mobile Wi-Fi 4G router(as above 192.168.2.2), 
+                            you are now connected to the internet via the wireless interface. Note that this IP address is the Raspberry Pi&reg;'s local address inside the router's local network. 
+                        </p>
+						
+						
+						
+						
+						<p>To have the Raspberry Pi&reg; automatically get an IP address when the <i>wwan0</i> interface is enabled, edit the interface file located at: /etc/network/interfaces 
+							<pre class="gutter: false">
+pi@raspberrypi:~$ sudo nano /etc/network/interfaces
+							</pre>
+							Add the following two lines to the bottom of the interfaces file:
+							<pre class="gutter: false">
+auto wwan0
+iface wwan0 inet dhcp  
+							</pre>
+						</p>
+						
+						
+						
+						<p>To connect to your Raspberry Pi&reg; from the internet, you will need to determine your router's public (WAN) IP address; there are a few ways to determine the public IP address:
+							<ol>
+								<li> Go to admin GUI of the router and select Data Used tab then look against WWANIP (see section 7 iv e if you need to know how to access the admin GUI of the router) </li>
+								<li> Complete section 7 iv d (Check  serial port with minicom) then while in Minicom type in AT command: AT+CGPADDR. This will present the router internet address for SSHing into. </li>
+								<li> You can also use 3rd party services such as google (using "my ip" as a search term), or <a href="http://www.whatismyip.com">www.whatismyip.com</a>. </li>
+							</ol>
+                        </p>
+                    </li>
+                    <li> <h3><a name ="section5.2">Send GPS coordinates to the server and display your position on a Google map</a></h3>
+
+                        <div class="alert alert-error">
+                            <strong>Please Note:</strong> This will display your kit's position on the Challenge map.  This map will be visible
+                            to other contestants when your kit is powered up. If you do not want the position of your kit made public then
+                            please move to the next step. 
+                        </div>
+
+                        <p> Return to the <i>LXTerminal</i> and type the following command: </p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi ~/m2m-university-challenge/example-client-python $ sudo nano gpsclient.py
+                        </pre>
+
+                        <p>This will open the python file into a text editor.</p>
+                        <p>Within this text editor, under "Global Variables" please edit your team name. This will be the displayed on the Google map.</p>
+
+                        <pre class="gutter: false">
+# Global Variables
+......
+teamname = "Team XX"  # Change displayString to reflect your team name
+                        </pre>
+
+                        <p>After the edit have been made, hold <code>Ctrl</code> + <code>x</code> (prompting you to save the file) then press <code>Y</code>
+                            (for yes) then <code>Enter</code> to keep the same file name.</p>
+                        <div class="alert alert-info">
+                            <strong>NOTE: </strong>You will notice in this script, this is a variable called <i>M2MserverURL</i>. This is the variable that you can 
+                            change to direct the Raspberry Pi&reg; to your VM server. For now leave it as is, as we will go over it in the VM section <a href="#ip_change">here</a>.
+                        </div>
+
+                        <p>Next return to <i>LXTerminal</i> and type the following commands:</p>
+
+                        <pre class=" gutter: false">
+pi@raspberrypi ~/m2m-university-challenge/example-client-python $ sudo python gpsclient.py
+                        </pre>
+
+                        <p>This will relaunch the script as in the previous step. </p>
+
+                        <p>If the script successfully initiates, you should see the following final response in the terminal. </p>
+
+                        <pre class="gutter: false">
+[ -- ] System Initiating Setup
+[ -- ] Creating Queue Threads
+[ -- ] Serial port is already open
+[ OK ] Modem Echo On
+[ OK ] SIM Card IMSI is 505013469658959
+[ OK ] Modem IMEI is 359822941391032
+[ OK ] Pi CPU Serial ID is: 0000000006e00cffe
+[ OK ] System Setup Complete
+*****************************
+[ -- ] GPS tracking session not started
+[ OK ] Started GPS Tracking Session
+[ OK ] Fix Session Status = ACTIVE
+
+
+Posting GPS coordinates lat: -37.813475 and long:144.970997222
+imei:357272044593295 imsi:505013499180520 cpuID: 000000006e59e7f5
+displayString Team ?? arbitraryText UTC Timestamp is 2013-04-28 08:39:42
+Server: nginx/1.3.14
+Date: Sun, 28 Apr 2013 08:39:26 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: close		
+                        </pre>
+                        
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Your IMEI and IMSI will be unique for your device.  
+                        </div>
+
+                        <div class="alert alert-error">
+                            <strong>Note:</strong> You may at this point get an exception thrown (ie. the script terminates or no GPS coordinates are given). Some 
+                            suggestions to troubleshoot this are: 
+                            <ul>
+                                <li>No GPS signal can occur due to the Raspberry Pi&#174; being in an area where it cannot see the GPS satellites. Please try moving
+                                    the Raspberry Pi&#174;(with the BigPond&#174; Mobile Wi-Fi 4G router attached) closer to a window to ensure that the satellites are detected, 
+                                    then, relaunch the script. It is best to watch the output after the AT command <code> AT!GPSSATINFO? </code> to see if there are 
+                                    any satellites in view. Once there is a satellite lock, it is expected a latitude and longitude result should follow this command.
+                                <li> <i> tshark </i> is useful to see what data is being transmitted.   A typical command line for tshark is <i> tshark -i eth0 -n 
+                                        port 80 </i> which shows all traffic on port 80 on eth0. 
+                                </li> 
+                                <li>An exception is thrown due to server being down. Your device is working correctly but the sever inside Telstra which is trying 
+                                    to store your results is not accepting your HTTP POST request.  The best thing to do here is to email our 
+                                    <a href="mailto:telstrauniversitychallenge@team.telstra.com">support team</a> via the website process.
+                                </li>
+								<li>
+									Please note that it can take several minutes for the initial GPS coordinates to be calculated, even with multiple satellites in view.
+								</li>
+                            </ul>	
+                        </div>
+
+                        <p>Before proceeding, you will need to terminate the script by pressing <code> "CTRL" </code> and <code> "c" </code> together.
+
+                        <p>On the Telstra M2M University Challenge map, which is on the <a href="http://www.telstra.com/universitychallenge" target="_blank">Telstra M2M University 
+                                Challenge website</a>, you will now see a marker corresponding to your team name and clicking it should show you the data string 
+                            which you typed in the python script earlier.
+                        </p>
+                        <!--				
+                                        <div class="container">
+                                        <div id="map" style="width:800; height:600"></div>
+                                        </div>
+                        -->		
+                        <p>You have just successfully reported your GPS location on the map!</p>
+                </ol> 
+                <li><h3><a name ="section6"> Setting up the Virtual Machine </a></h3></li>
+
+                <p> By this point of the set-up you will have successfully completed the following steps: </p>
+                <ul>
+                    <li>Gathered data from your hardware;</li>
+                    <li>Sent your data to our web server; </li> 
+                    <li>Displayed GPS data in a meaningful way on a web application; </li>
+                </ul>
+                <br>
+                <p> In this section we will be setting you up with your own "cloud" or web server in the Telstra Cloud Innovation Centre environment. 
+                    You can use this VM to store your own data from the Raspberry Pi&#174; and if you choose to build a web application to display any data associated 
+                    with your innovation. 
+                </p>
+
+                <ol type = "i">
+                    <li>
+                        <h4><a name ="section6.1">Get your VM</a></h4> 
+
+                        <p>The first step is to get access to the virtual machine.  To avoid sending passwords via email, we provision access to the virtual machines by 
+                        way of an ssh public key.  If you've never used SSH keys like this before, this step might seem cumbersome.  However, when you've completed 
+                        it, you'll be able to securely log in without typing a password. To generate an RSA key pair:</p> 
+
+                        <h5> Accessing your VM from a Linux client </h5> 
+                        <p>Under Linux, you can generate an RSA key pair with the following command: </p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi:~$ ssh-keygen -b 4096
+                        </pre>
+
+                        <p>If you accept the default options, an RSA key will be generated and saved to the .ssh directory in your home directory.  The public key file 
+                        will have the name <i>id_rsa.pub</i> and the private key will have the name <i>id_rsa</i>.   Copy the contents from id_rsa.pub into an email, 
+                        and send it to the <a href = "mailto:telstrauniversitychallenge@team.telstra.com">email support address</a>.   We'll send you back the IP 
+                        address of your VM server, and you will be able to login using your private key to authenticate yourself.  </p>
+                        
+                        <p>[THIS SECTION NEEDS CHECKING]</P>
+
+                        <h5>  Accessing your VM from a Windows client </h5> 
+
+                        <ol>
+                            <li>Downloaded <i>PuTTYgen</i> from <a href = "http://the.earth.li/~sgtatham/putty/latest/x86/puttygen.exe"_blank"">here</a> and PuTTy 
+                                from <a href = "http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe"_blank"">here</a></li>
+                            <li>Launch <i>PuTTYgen</i> (where you will see the screen below).</li><br>
+                            <img src="./static/images/putty_gen_home_screen.png" alt="putty_gen_home" width="40%" height="40%">
+                            <li>Press <code>Generate</code> button. </li>
+                            <li><u>You will need to move the mouse to generate the key</u>, where you will get the expected output below. </li><br>
+                    <img src="./static/images/putty_generated_screen.png" alt="putty_gen_generated" width="40%" height="40%">
+                    <li>[OPTIONAL] Protect the key file by entering a passphrase into the two empty textboxes.  This will be requested to log into the VM. (highly 
+                        recommended)
+                    </li>  
+                    <li>Click <code>Save Private Key</code>. </li>
+                    <li>Copy the contents of the ssh key into an email, and send it to the <a href = "mailto:telstrauniversitychallenge@team.telstra.com">email 
+                            support address</a>.   We'll send you back the IP address of your VM server, and you will be able to login using your private key to 
+                        authenticate yourself. Please ensure you send the key with the same format below, <u>with your user name included!</u>
+                    </li>
+                    <pre class="gutter: false"> 
+ssh-rsa 
+AAAAB3NzaC1yc2EAAAABJQAAAIBaGB3ge46H8GOjcdEgyn6ZR63IUqoGRGF1BnHTaISHTOr/97MlPRI5ykmr/S8cEL0Bf+UwmEyfCkflaNs+HRTpBu6JwiPFmuCOrI/GENTQyNE3Bm6wV/oXp/Ym2IPHt9j9pEmRRXsStJ37LphgiXoa+ewisWvpuY58OheP9b9dGQ== <b><font color="red">your_user_name</font></b>
+                    </pre>
+                    
+                    <li>Open up the <i>PuTTY</i> program you downloaded earlier. Under the Connection->SSH->Auth options on the left side of program, there is a box 
+                        called 'Private key file for authentication' where we direct the program at the private key file for the ssh key. (see image below)</li><br>
+                    <img src="./static/images/putty_key_output.png" alt="putty_gen_output" width="40%" height="40%"><br><br>  
+                    <li>
+                        Under the Session option in <i>PuTTY</i>, enter in the IP address emailed to you and press <code>Open</code> to connect to you Linux server, leaving the port as is. 
+                    </li>
+                    <img src="./static/images/putty-connect.png" alt="putty_gen_output" width="40%" height="40%"><br><br>
+                </ol>
+                </li>
+                <li>
+                    <h4> <a name ="section6.2"> Create an unprivileged user</a></h4> 
+
+                    <p>You should avoid using the root account as your everyday account where possible.   The root account provides very little room for error - 
+                    <code> rm </code> will successfully remove important files, and if a script you are developing goes awry, there is very little to stop it.   
+                    Additionally, if you work from the server, it can be annoying to share a single user environment. 
+                    An easy mitigation for this is to create an unprivileged user for each member of your group.   To do this, use the command <i>adduser</i>. 
+                    The following is a transcript from creating a user tom as root. </p>
+                    
+                    <p>The Terminal will prompt you to enter in a new UNIX password and confirm it. Then well ask you for you details and to confirm it.</p>
+
+                    <pre class="gutter: false"> 
+root@m2mteam00:~$ sudo adduser tom
+[sudo] password for root:
+Adding user `tom' ...
+Adding new group `tom' (1002) ...
+Adding new user `tom' (1002) with group `tom' ...
+Creating home directory `/home/tom' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for tom
+Enter the new value, or press ENTER for the default
+	Full Name []:  Tom Citizen  
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] y
+                    </pre> 
+                    <p> You should now be able to log into your virtual machine using the provided username and your private key. </p> 
+
+                    <p> As many of the commands to follow require root permission to execute. You will need to enter a command to give the user 'tom' this access. 
+                        This can be done as follows.
+                    </p>
+                    <pre class="gutter: false">
+root@m2mteam00:~$ sudo usermod -a -G sudo tom
+                    </pre>
+               <!-- <li>
+                    <h4><a name ="section6.3">Installing and configuring your web server on your VM</a></h4>
+                                        
+                </li> -->
+                <li>
+                    <h4><a name ="section6.4">Clone the application server code to your VM</a></h4>
+
+                    <p> The next step is to clone the application server to your VM.</p>
+                    <p> You may remember doing this for your Raspberry Pi&#174; earlier in this tutorial and the steps are exactly the same.</p>
+                    <p>First we must install git: </p>
+
+                    <pre class="gutter: false">
+root@m2mteam00:~$ sudo apt-get install git
+                    </pre>
+
+                    <p> Now, change to unprivileged user (rather than as root) and clone the repository locally to your VM. </p>
+
+                    <pre class=" gutter: false">
+root@m2mteam00:~$ su tom 
+
+tom@m2mteam00:~$ git clone https://github.com/telstra/m2m-university-challenge.git
+                    </pre>
+                </li>
+                <li>
+                    <h4><a name ="section6.5">Build your webserver on your VM</a></h4>
+                    
+                    <p>Before we start we need to ensure that the pip install function is installed on the VM server. In the <i>LXTerminal</i>, enter the following.</p>
+                    
+                    <pre class="gutter: false">
+tom@m2mteam00:~ $ sudo apt-get install python-pip
+                    </pre>
+
+                    <p>Now we need to download the Flask framework for the server and the Google Map API for the location map. Then we can build the server: </p> 
+
+                    <pre class="gutter: false">
+tom@m2mteam00:/home ~ $ cd m2m-university-challenge/example-server-python/
+
+tom@m2mteam00:/home/tom/m2m-university-challenge/example-server-python ~ $ sudo pip install Flask
+
+tom@m2mteam00:/home/tom/m2m-university-challenge/example-server-python ~ $ sudo pip install flask-googlemaps
+                    </pre>
+
+                    <p> If successful, Flask will indicate that the build is complete.</p> 
+                    
+                    <p>
+                        To run the server, we just have to run <i>m2mConnect.py</i> file in the terminal
+                    </p>
+                    
+                    <pre class="gutter: false">
+tom@m2mteam00:/home/tom/m2m-university-challenge/example-server-python ~ $sudo python m2mServer.py
+                    </pre>
+                    <p>
+                        The following text should appear in the terminal screen to show it has been successful.
+                    </p>
+                    <pre class="gutter: false">
+ * Running on http://0.0.0.0:80/
+ * Restarting with reloader                        
+                    </pre>
+                    <p> You can verify that the webserver forwards requests by attempting to access you VM server's IP in 
+                        a browser, eg. http://203.42.134.62:80 Or using a command line tool such as wget or curl.  You should see 
+                        that no data has been enter as of yet.
+                    </p>
+                    <p>Press <code>Control</code> + <code>C</code> to exit the program and return to the terminal prompt.</p>
+
+					
+					    <div class="alert alert-error">
+                            <strong>Note:</strong> You may have noticed that the flask web app stops running when you close your putty session.
+							To keep the Flask server running even when you close the putty session, we suggest using <i>screen</i> for persistent terminal sessions:
+                            
+							<pre class=" gutter: false"> pi@raspberrypi ~ $ screen </pre>
+							
+							You should then see a splash screen with version information from screen with a prompt to:
+							<i>[Press Space or Return to end.]</i>
+							
+							Press Space or Return and you'll return to a command line prompt as before. However, screen should now be running,
+							you can now send commands to screen using the <i>ctrl+a</i> key combo, followed by a valid command.
+							Press <i>Ctrl+a ?</i> to see a list of available commands, and to confirm that screen is running. 
+													
+							You can then run your m2mServer as usual with:							
+							<pre class=" gutter: false"> pi@raspberrypi ~/m2m-university-challenge/example-server-python $ sudo python m2mServer.py </pre>
+							
+							You can then detach from that terminal using the the screen command: <i> Ctrl+a d </i> you should then see a message informing of the session ID of the terminal you just detached from, make a note of it:
+							
+							<pre class=" gutter: false"> pi@raspberrypi ~/m2m-university-challenge/example-server-python $ 
+[detached from 16260.pts-0.M2MTeamT1]
+							</pre>
+							
+							You can then reattach to any running screen sessions using the reattach command <i> screen -r <session ID></i>
+							
+							<pre class=" gutter: false"> pi@raspberrypi ~/$ screen -r 16260.pts-0.M2MTeamT1	</pre>
+
+                        </div>
+					
+					
+					
+                </li>
+                <li>
+                    <h4><a name ="section6.6">Send data from your Raspberry Pi&#174; to your VM</a></h4>
+
+                    <p> While still within the VM environment, you want to first modify your local version of the Telstra M2M University Challenge map which you 
+                        will use to host your web application to retrieve data from the correct url position. You will do this by first opening your 
+                        <i>map_unique.html</i> file in a text editor. 
+                    </p>
+                    <pre class="gutter: false">
+tom@m2mteam00: ~$ cd /home/m2m-university-challenge/example-server-python/templates/
+
+tom@m2mteam00:/home/m2m-university-challenge/example-server-python/templates$ nano map_unique.html
+                    </pre>		
+
+                    <p> In the area of the script where the json array is loaded to get the marker data you will need to point the url in the new direction to 
+                        your VM (where in our example that is "http://203.42.134.221" ). 
+                    </p>
+                    <a name="ip_change"> </a>
+                    <pre class="gutter: false">
+function addMarker() {
+	$.ajax({
+		type: "GET",
+		//url: "http://example.innovation.telstra.com/api/position",
+		url: "http://203.42.134.221/api/position",
+		async: false,
+		dataType: "json",
+		success: function(data){
+				teamArray = data;
+			}
+	});							 
+                    </pre>		
+
+                    <p>Next you will access your Raspberry Pi&#174; by either using the workstation or SSH into the Pi as in the instructions 
+                        <a href ="#section8.1">Setup remote connection to Pi via SSH</a>. And modify the gpsclient script to post the GPS data to the correct 
+                        VM location. 
+                    </p>
+                    <pre class="gutter: false">
+pi@raspberrypi ~/home $ cd m2m-university-challenge/example-client-python
+
+pi@raspberrypi ~/m2m-university-challenge/example-client-python $ nano gpsclient.py
+                    </pre>
+
+                    <p>Within the text editor change the positionUrl so it points toward your VM server.  In the example below, the Python script is modified 
+                        to point to the IP address 203.42.134.221
+                    </p>
+
+                    <pre class="brush: python; gutter: false">
+# Global Variables
+....
+#M2MserverUrl = "http://example.innovation.telstra.com/api/position"  # Target server for JSON upload
+M2MserverUrl = "http://203.42.134.221/api/position"
+                    </pre>
+
+                    <p>Launch the <font face="courier"> gpsclient.py </font> script and watch whether you get a successful post.</p>
+
+                    <p>If successful you should see a marker on the Google map hosted on your VM server. </p>  
+
+                    <p> If you have seen the marker, congratulations, you have setup your webserver and have successfully completed this tutorial! </p>
+                </li>
+            </ol>
+            <!--
+            <li><h3><a name="section7"> Putting It All Together </a></h3></li>
+            
+            <ol type="i">
+                <li><h3><a name ="section7">blank</a></h3>
+                    <p>
+                        
+                    </p>                          
+                </li>
+            </ol>
+            -->
+            <li><h3><a name="section8"> Supporting Documentation </a></h3></li>
+            <ol type="i">
+                <li><h3><a name ="section8.1">Setup remote connection to your Raspberry Pi&#174; via SSH</a></h3>
+                    <p><b>SSHing into the Raspberry Pi&reg; over the wifi network</b></p>
+                    <p>
+                        Another way to SSH into your device is to connect your device and laptop to the same 4g modem/router provided by Telstra. You will need to run the same scripts 
+                        as described in the guide, so this may not be an option till after the scripts have been downloaded.                         
+                    </p>
+
+                    <p>Install <i>PuTTY</i> (a Telnet and SSH client for MS Windows) from the following 
+                        <a href = "http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank"> link</a> if not already from your desktop.</p>
+                    
+                    <p>Ensure both you computer and Raspberry Pi&reg; are connected to the 4g modem</p>
+
+                    <p>Download <i>Putty.exe</i> and save on your desktop. Launch the program.</p>
+
+                    <img src="./static/images/putty-config.jpg" alt="putty_config" width="40%" height="40%">
+
+                    <p>Under <code>Host Name (or IP address)</code> please type in the <i>192.168.2.2</i> as this is the default address for devices attached to the USB port of the modem. 
+                        Leave <code>Port</code> as <code>22</code> and ensure the connection type <code>SSH</code> remains selected.</p>
+
+                    <p>Under <code>Saved Sessions</code> please type your <i>team name</I> select <code>Save</code>. And finally press <code>Open</code>.</p>
+
+                    <p>If a connection is established you should see a <i>Security Alert Screen<i> shown below. This is indicating you're tunnelling into the device. 
+                        Select <code>Yes</code> and proceed.</p>
+
+                    <img src="./static/images/Putty_security_Alert.png" alt="putty_alert" width="40%" height="40%">
+
+                    <p>In the putty terminal you will be prompted for your <i>username</i> and <i>password</i> if you didn't set this at the beginning of this guide, 
+                        the default values are <code>pi</code> and <code>raspberry</code>. </p>
+
+                    <pre class="gutter: false">
+login as: pi
+pi@123.209.52.215's password:
+...
+
+pi@raspberrypi ~ $  
+                    </pre>
+
+                    <p>Once successful, you will see the familiar terminal. Congratulations you are now connected to your device!</p>
+                    
+                    <p><b>SSHing into the Raspberry Pi&reg; connected to the 4G modem, over the internet </b></p>
+                    
+                    <p>We can SSH into the Raspberry Pi&reg; while it is in the field to update the programming or check its status. This is done by setting up port forwarding on the modem.</p>
+                    <div class="alert alert-info">
+                                <p><strong>Note:</strong> The 4G modem is assigned a dynamic IP address, so if the modem cycles off and on, the modem could be assigned a new IP address.  </p>
+                    </div>
+                    <p>To set up port forwarding on the 4G modem provided, please follow the guide found <a href="#section8.4.5">here.</a></p>
+                    <p>Install <i>PuTTY</i> (a Telnet and SSH client for MS Windows) from the following 
+                        <a href = "http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank"> link</a> if not already from your desktop.</p>
+                    <p>Download <i>Putty.exe</i> and save on your desktop. Launch the program.</p>
+
+                    <img src="./static/images/putty-config.jpg" alt="putty_config" width="40%" height="40%">
+
+                    <p>Under <code>Host Name (or IP address)</code> please type in the IP address of the modem (this can be found on the 4G Modems home page - telstra.4g). 
+                        Leave <code>Port</code> as <code>22</code> and ensure the connection type <code>SSH</code> remains selected.</p>
+
+                    <p>Under <code>Saved Sessions</code> please type your <i>team name</I> select <code>Save</code>. And finally press <code>Open</code>.</p>
+
+                    <p>If a connection is established you should see a <i>Security Alert Screen<i> shown below. This is indicating you're tunnelling into the device. 
+                        Select <code>Yes</code> and proceed.</p>
+
+                    <img src="./static/images/Putty_security_Alert.png" alt="putty_alert" width="40%" height="40%">
+
+                    <p>In the putty terminal you will be prompted for your <i>username</i> and <i>password</i> if you didn't set this at the beginning of this guide, 
+                        the default values are <code>pi</code> and <code>raspberry</code>. </p>
+
+                    <pre class="gutter: false">
+login as: pi
+pi@123.209.52.215's password:
+...
+
+pi@raspberrypi ~ $  
+                    </pre>
+
+                    <p>Once successful, you will see the familiar terminal. Congratulations you are now connected to your device!</p>
+                </li>
+                <li><h3><a name ="section8.2">Git, and first steps with a GitHub account</a></h3> 
+	 
+                            <div class="alert alert-error">
+                                Our references and explanation are relative to the use of Git, and more specifically GitHub.  You should feel free to choose 
+                                your favourite version control system. If you do choose to use GitHub, bear in mind that repositories in non-paid accounts are 
+                                typically publicly visible, and this may not be what you want. You may wish to look at the following 
+                                <a href="https://github.com/edu" target="_blank"> page </a> which describes free plans for students.  
+                            </div>
+                            <h4> Git </h4>  
+                            <p> We assume that you will have already been exposed to a version control system as part of your degree.  If not, you may wish to 
+                                follow the <a href = "http://git-scm.com/docs/gittutorial" target="_blank">git tutorial</a>, which will assist you in understanding this widely 
+                                used version control system.  The advantage of learning a system like this is that it greatly simplifies collaboration within your team. 
+                            </p>   
+
+                            <h4> GitHub </h4> 
+
+                            <p> GitHub is a website which provides convenient online storage for git respositories.  The purpose of this section is to get you familiar 
+                                with how to use GitHub to share code.
+                            </p>
+
+                            <p> First go to the <a href= "https://GitHub.com/" target="_blank"> GitHub site</a>, and create a user account. </p>
+
+                            <img src="./static/images/git_hub_homescreen.png" alt="git homescreen" width="50%" height="50%">
+
+                            <p> Now with a GitHub account setup let's start the tutorial. </p>
+
+                            <div class="alert alert-info">
+                                <p><strong>Prerequisites:</strong> Internet connected computer running Windows, Mac or Linux. </p>
+                            </div>
+
+                            <div class="alert alert-error">
+                                <strong>Please Note:</strong> Before proceeding with these steps, ensure that you have permission to access this repository by sending 
+                                the <a href ="mailto:telstrauniversitychallenge@team.telstra.com"> support team </a> your GitHub user ID. If you don't, you will get 
+                                a page 404 error.
+                            </div>
+
+                            <ol>
+                                <li><b>Challenge - Fork</b></li>
+                                <ul>
+                                    <li>Visiting the link <a href= "https://github.com/telstra/m2m-university-challenge/ target="_blank""> 
+                                            https://github.com/telstra/m2m-university-challenge/ </a></li>
+                                    <li>Clicking on the 'Fork' button at the top right of the screen. </li>
+                                </ul>
+                                The action of forking creates a copy of the example repository in your own workspace on GitHub.  You do not yet have a copy on your 
+                                local machine.  That's the next step.  To do this; 
+                                <li><b>Challenge - Clone</b></li>
+                                <ul>
+                                    <li>Navigate to your own copy of the example repository; It will show as YourUserName/example toward the top left of the screen.</li>
+                                    <li>If you want to use the desktop client, click the Clone in Mac / Clone in Windows button.   This will prompt you to install the 
+                                        desktop client.   
+                                    </li>
+                                    <li>Run the desktop client, and enter your GitHub username and password.</li>
+                                    <li>Select the example repository by navigating to your user account (under the heading GitHub) and clicking on the example
+                                        repository to clone it.
+                                    </li>
+                                </ul>
+                                <li><b>Challenge - Modify your local copy</b></li>
+                                <ul>
+                                    <li>Once you have this cloned, view the repository, and click on "open in explorer" from the tools menu.   </li>
+                                    <li>Use your favourite editor to add your name to the file.  </li>
+                                    <li>Return to the GitHub client - it will now flag your changes as 'uncommitted changes', and offer you an option to see your 
+                                        changes by clicking 'Show'  Enter a commit message and description, then click commit. '
+                                    </li>
+                                    <li>In the next screen, you will see that you have unsynced commits.    Click on the 'sync' button, which will cause a copy of 
+                                        your changes to be pushed back to GitHub. 
+                                    </li>
+                                    <li>Navigate back to the repository page in GitHub. You will see that you now have a copy of the README in the respository which 
+                                        includes your name.  
+                                    </li>
+                                </ul>
+                                <li><b>Challenge - Request a merge into the main Telstra repository</b></li>
+                                <ul>
+                                    <li>Click on the 'pull request' button. </li>
+                                    <li>You should now see a form confirming that you'll be merging your change into the base repository telstra/example.</li>
+                                    <li>Make sure you fill in a descriptive name for the pull request, and submit. </li>
+                                </ul>
+                                <li><b>Challenge - File an issue</b></li>
+                                <ul>
+                                    <li>Click on the Issue button from the Telstra repository homepage at <a href= "https://github.com/telstra/m2m-university-challenge/" target="_blank"> 
+                                            https://github.com/telstra/m2m-university-challenge/ </a> </li>
+                                    <li>Select New Issue and fill in the template.    </li>
+                                </ul>
+                            </ol>
+
+                       
+                </li>
+                <br>
+                <p> If you haven't been included to the <a href ="https://GitHub.com/telstra/example.git" target="_blank"> https://GitHub.com/telstra/example.git </a> repository 
+                    authorised user list please email our <a href="mailto:telstrauniversitychallenge@team.telstra.com">support team</a> and we will add you to give you 
+                    permission to download the repository content.
+                </p>
+
+            <li><h3> <a name ="section8.3">Technical Document & Support</a></h3> 
+                <p><b>Raspberry Pi&reg;</b></p>
+                <ul>
+                    <li>Raspberry Pi&reg: Model B rev 2 - Schematic <a href="http://www.raspberrypi.org/wp-content/uploads/2012/10/Raspberry-Pi-R2.0-Schematics-Issue2.2_027.pdf" target="_blank">[here]</a></li>
+                    <li>Raspberry Pi&reg; Camera Documentation <a href="http://www.raspberrypi.org/wp-content/uploads/2013/07/RaspiCam-Documentation.pdf" target="_blank">[here]</a></li>
+                    <li>Raspberry Pi&reg; Forum <a href="http://www.raspberrypi.org/forum/" target="_blank">[here]</a></li>
+                    <li>PiFace Digital - GitHub Site (examples) <a href="https://github.com/piface/pifacedigitalio" target="_blank">[here]</a></li>
+                </ul>
+                <p><b>4G Router</b></p>
+                <ul>
+                    <li>Netgear 760s Quick Start Guide <a href="http://www.downloads.netgear.com/files/aircard/2400196_AirCard%20760S%20Mobile%20Wi-Fi%20QSG_r1_web.pdf" target="_blank">[here]</a></li>
+                    <li>Netgear 760s Support Page <a href="http://support.netgear.com/product/AirCard%2b760S%2b%2428Telstra%2429" target="_blank">[here]</a></li>
+                </ul>
+                <p><b>VM Server (Flask)</b></p>
+                <ul>
+                    <li>Flask Tutorial <a href="http://flask.pocoo.org/docs/tutorial/" target="_blank">[here]</a></li>                    
+                </ul>
+            </li>
+            <li><h3><a name ="section8.4">Troubleshooting Guide</a></h3>
+                <p>Below are some troubleshooting tips for support during your device set up or during the Challenge. Additional information will be posted on the FAQ 
+                    site during the challenge and questions can be answered via the support email address.
+                </p>
+                <ol type = "a">	
+                    <li>
+                        <h3><a name ="section8.4.1"> Using remote access for Raspberry Pi&#174; initial set up</a></h3>
+                        <p>If you want to set up your Raspberry Pi&#174; by remote access only, without a monitor connected to it, 
+                            then you will need to connect the Raspberry Pi&#174; to a router so it is possible to find the device's IP address.  
+                            Once you have this it will be possible to SSH to the device.  Refer to Section 8.1: <a href ="#section8">Setup remote connection to 
+                            Raspberry Pi&#174 via SSH</a>.
+                        </p>	   
+                    </li>	  
+                    <li>	  
+                        <h3><a name ="section8.4.2"> Loading the Raspbian Operating System on a SD card</a></h3>	
+
+                        <div class="alert alert-info">
+                            <p><strong>Note:</strong> We will be providing SD cards with the Raspbian Operating System pre-installed hence this section are only for those
+                                considering using extra SD cards</p>
+                        </div>
+                        <div class="alert alert-error">
+                            <strong>Please Note</strong>  The BigPond&#174; Mobile Wi-Fi 4G device requires Linux drivers which are not present in early versions of the Wheezy 
+                            Raspberry Pi&#174; image.   We draw your attention to this because there is <i> partial </i> support under these drivers for data, and this 
+                            partial support may obscure your attempts to debug.  We recommend using 
+                            <a href="http://downloads.raspberrypi.org/raspbian_latest" target="_blank"> 
+                                2014-01-07-wheezy </a>.  
+                        </div>  
+
+                        <p>Open your favourite browser and go the official Raspberry Pi&#174; <a href = "http://www.raspberrypi.org/downloads" target="_blank"> 
+                           download page </a>; here you will need to go to download two files, an ISO image of Raspbian Operating System, as well as ISO imager named 
+                           <b>2014-01-07-wheezy-raspbian.zip</b> and <b>Win32DiskImager</b> respectively.</p>
+
+                        <p>Insert your 8-GB in the SD-card reader and launch <i>Win32DiskImager</i>. Locate the wheezy Raspbian ISO and ensure the device where the SD card 
+                            is located is selected, where in this example is disk <code>F</code>. Then press <code>write</code>.
+                        </p>
+
+                        <img src="./static/images/win32 Disk_image.png" alt="win32" width="40%" height="40%">
+
+                        <p>Wait until the write is successful then eject the device. Insert the SD card into the Raspberry Pi&#174; as below. </p>
+
+                        <img src="./static/images/SD_inserted.jpg" alt="SDInserted" width="40%" height="40%">
+                    </li>
+                    <li>
+                        <h3><a name ="section8.4.3"> Configure your Raspberry Pi&#174;</a></h3>
+
+                        <p> To get to the Raspberry Pi&#174; config screen you will need to type the following command on the <i>LxTerminal</i>: </p>
+
+                        <pre class="gutter: false">
+pi@raspberrypi ~ $ sudo raspi-config			
+                        </pre>
+
+                        <p>The screen below should appear:</p>
+
+                        <img src="./static/images/1-1.png" alt="raspconfig" width="40%" height="40%">
+                        <br>
+                        <br>
+
+                        <p>In this menu you can decide to setup your SSH password for extra security and set the local time. And also, configure the keyboard that 
+                            you're currently using if you know the model name.
+                        </p>
+
+                        <p> Complete the setup by selecting <code>Start desktop on boot</code> and finally <code> Finish</code>.
+
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> On a Raspberry Pi&#174; / keyboard combination we tested, the keyboard map was incorrectly set, which caused 
+                            incorrect characters to display when typing.  If you have a similar issue, you can use the following command to manually set the 
+                            keyboard map to 'us'. <pre class=" gutter: false"> pi@raspberrypi ~ $ setxkbmap us </pre>
+                        </div>	 
+
+                    </li>
+                    <li>	<h3><a name ="section8.4.4"> Check serial port with Minicom</a></h3>
+                        <p>Launch <i>LxTerminal</i> on the Raspberry Pi&#174; and install Minicom from the following commands below:</p>
+
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ sudo apt-get install minicom
+                        </pre>
+
+                        <p> Next type the following to enter the setup screen below </p>
+
+                        <pre class=" gutter: false">
+pi@raspberrypi ~ $ minicom -s
+                        </pre>
+
+                        <img src="./static/images/minicom_setup_screen.png" alt="minicom1" width="25%" height="25%">
+                        <br>
+
+                        <p> While in this menu go to <code> Serial Port Setup </code></p>
+
+                        <img src="./static/images/minicom_setup_screen_2.png" alt="minicom2" width="55%" height="55%">
+                        <br>
+
+                        <p> Press <code> "A" </code> and <code> "Enter" </code> to enter to configure the <code>"Serial Device"</code> </p>
+
+                        <p> If <i>"modem"</i> appears in the <code>"Serial Device"</code> please rewrite <i>"ttyUSB3"</i> in it's place then press 
+                            <code>"Enter"</code> twice. </p>
+
+                        <p> Upon returning to the minicom homescreen go to the option "exit" and press <code>"enter"</code>.
+
+                        <p> While in this screen type the AT command <code>"ATZ"</code> if you get a return <code>"OK"</code> it means that the serial port is working.
+
+                        <p> Exit this screen by pressing <code>"CTRL"</code> and <code>"A"</code> then select <code>"Q"</code> to quit the menu and return to the terminal.</p>
+
+                        <img src="./static/images/minicom_setup_screen_3.png" alt="minicom3" width="55%" height="55%">
+                        <br>
+
+                    </li>
+                    <li>
+                        <h3><a name ="section8.4.5">Configuring the BigPond&#174; Mobile Wi-Fi 4G Router</a></h3>
+
+                        <p>Connect the BigPond&#174; Mobile Wi-Fi 4G router to a Windows workstation and run the <i>setup.exe</i> when prompted or, if the router is active, you can access the admin page via Wi-Fi as well.</p>
+                        <p>Open up the web browser and go to the website <a href="http://telstra.4g" target="_blank">http://telstra.4g</a> to access the devices homepage for maintenance.The Admin login is <b>admin</b>.</p>
+                        <img src="./static/images/aircard.png" alt="aircard_webpage" width="40%" height="40%">
+                        <br>
+                        <br>
+                        <p><b>Changing or checking the APN</b></p>
+                        <ol>
+                            <li>To check your APN, go to <code>Advanced Setting</code>, then <code>WAN</code> and then select <code>Setup</code></li>
+                            <img src="./static/images/aircard_apn.png" alt="aircard_apn" width="60%" height="60%">                            
+                            <li>Go to Profiles option at the bottom of the screen and from the options select <code>Telstra.extranet</code>. If <i>Telstra.Extranet</i> isn't available, click <code>Add/Edit Profiles</code>. </li>
+                            
+                            <li>In the top option, <code>[new...]</code>, then enter <b>Telstra.Extranet</b> for the name and <b>telstra.extranet</b> for the APN. 
+                                Select <code>None</code> for the Auth Type. <strong>Be sure to enter the APN in lower case!</strong></li>
+                            <img src="./static/images/aircard_apn_new.png" alt="aircard_apn_new" width="60%" height="60%">  
+                        </ol>
+                        <br>
+                        <br>
+                        <p><b>Removing the SIM Security</b></p>
+                        <ol>
+                            <li>Under default settings, on a reboot the router will request that you enter the unlock pin located on the SIM card. 
+                                This security can cause a problem if the device is in the field and the router reboots. To disable this go to 
+                                <code>Advanced Settings</code>, <code>WAN</code>, and select the <code>SIM</code> tab. </li>
+                            <img src="./static/images/aircard_sim.png" alt="aircard_apn_new" width="60%" height="60%">
+                            <li>Then select the <code>Disable</code> option.</li>
+                        </ol>
+                        <br>
+                        <p><b>Setting up port forwarding for ssh</b></p>
+                        <ol>
+                            <li>Under default settings, port forwarding is disabled. To enable this go to <code>Advanced Settings</code>, <code>Router</code>, and select the <code>Port Forward</code> tab. </li>
+                            <img src="./static/images/4g_modem_ssh_pf.png" alt="aircard_apn_new" width="60%" height="60%">
+                            <li>Then select the <code>Enable</code> option.</li>
+                            <li>Next we need to add the IP address we want to port forward too, and what Port.</li>
+                            <li>For the <b>Name</b>, you can put something generic like <i>ssh</i> or <i>ssh1</i>, then for the <b>IP Adress</b> enter in <i>192.168.2.2</i> which is the 
+                                default address for devices attached to the modem through the USB cable. Then we want to enter <i>22</i> for the <b>Port</b> and finally select <i>TCP</i> for the <b>Protocol</b>. Then press <code>Add</code> to enter the settings. </li>
+                            <li>Repeat the previous step except select <i>UDP</i> for the <b>Protocol</b>.</li>
+                            <li>Port forwarding is successfully set up! To access the Raspberry PI&reg; via ssh, you will use the IP address of the 4G Modem and Port 22.</li>
+                        </ol>
+                    </li> 
+                </ol>
+            </li>
+            <li><h3> <a name ="section8.5">Frequently Asked Questions</a></h3> 
+                <p><b>Q. How can I check whether my router still has connectivity?</b></p>
+                <p><b>A. </b>There are several ways to verify this including by logging into the BigPond&reg; router website <a href="http://telstra.4g" target="_blank">http://telstra.4g</a>. Alternatively, you could try loading up a website.</p>
+                <br>
+                <p><b>Q. Why is the device using the Telstra.extranet Access Point Name (APN)?</b></p>
+                <p><b>A. </b>We are using this APN because it provides a public IP address to your device.</p>
+                <br>
+                <p><b>Q. Will I always be allocated the same IP Address when I connect to the network?</b></p>
+                <p><b>A. </b>No, the IP addresses are dynamically allocated when you attach to the network. It is likely you will often get the same address, but this should never be assumed.</p>
+                <br>
+                <p><b>Q. One of the components of the kit is broken. What should I do?</b></p>
+                <p><b>A. </b>Start by heading to the support tab[insert link] and fill out the support form. Alternatively, send a email to the <a href="mailto:telstrauniversitychallenge@team.telstra.com">support</a> 
+                    team. Be sure to detail the component that isn't working and the issue you are having and we'll be in touch shortly.</p>
+                <br>
+                <p><b>Q. What is the VM server Configuration?</b></p>
+                <b>A. </b>The VMs are provisioned with the following configuration:
+				<ul>
+					<li>Intel CPU (2 Cores) @ 2.27GHz</li>
+					<li>2GB of RAM</li>
+					<li>20GB of disk space</li>
+				</ul>
+                <br>
+                <p><b>Q. I am having username/password issues with the VM server. What should I do?</b></p>
+                <p><b>A. </b>Contact us by either filling out the support form or emailing the <a href="mailto:telstrauniversitychallenge@team.telstra.com">support</a> team. We will reset the username/password 
+                        for you.</p>
+                <br>
+                <p><b>Q. The Raspberry Pi&#174; power cycles or mouse does not respond properly. What's wrong?</b></p>
+                <p><b>A. </b>These issues can be caused by and insufficient power supply and/or large sudden power drain on the Raspberry Pi&#174;'s USB ports. Please ensure the power supply you are using 
+                    can at least support a minimum of 1A. We also do not recommend inserting the wireless modem directly into the Raspberry Pi&#174;'s USB ports while it is powered as this can cause a sudden 
+                    drain in power that can reset the Raspberry Pi&#174;. Where possible, we recommend using a powered USB hub to attach USB peripherals to the Raspberry Pi&#174;.</p>
+                <br>
+                <p><b>Q. Will the Telstra University Challenge utilise Telstra's 4G network?</b></p>
+                <p><b>A. </b>Teams will be provided with a Telstra 4G capable USIM and BigPond&reg; router, but teams will need to check the current Telstra coverage maps (located 
+                        <a href="http://www.telstra.com.au/mobile-phones/coverage-networks/our-coverage/" target="_blank">here</a>) to check what coverage is in their area.</p>
+                <br>
+                <p><b>Q. Why is GitHub being used for in the M2M challenge?</b></p>
+                <p><b>A. </b>GitHub is being used for the code sharing where there is a common benefit for all universities - such as improving the code provided by Telstra.</p>
+                <br>
+                <p><b>Q. Can the Telstra GitHub account be used for managing our own University Challenge Code?</b></p>
+                <p><b>A. </b>No, this is public repository. If you store your code in the Telstra GitHub account, it will be visible to other people. We recommend you use your own GitHub account or an 
+                    alternative tool to manage your M2M University Challenge development code. Please note that only paid Github accounts have private repositories.</p>
+                <br>
+                <p><b>Q. The keyboard configuration is wrong. How do I fix it?</b></p>
+                <p><b>A. </b>The default keyboard layout with the standard Raspberry Pi&#174; image is British layout. You will likely have to change this to a US layout for your keyboard to work properly. 
+                    Please see See the following <a href="http://www.raspberrypi.org/phpBB3/viewtopic.php?=63&t=33864" target="_blank">forum</a> or watch the following 
+                    <a href="http://www.youtube.com/watch?v=L1F-TxTPyiM" target="_blank">video</a> guide.</p>
+                <br>
+                <p><b>Q. I can only connect a mouse and keyboard into the Raspberry Pi&reg;'s USB ports - is there no third USB port for the USB modem?</b></p>
+                <p><b>A. </b>You will need to use a USB hub to increase the number of ports. We recommend using a powered USB hub. Another option is to remove the mouse and keyboard and connect remotely via 
+                    SSH in the Raspberry Pi&reg; while the device is connected to a network via Ethernet or wireless.</p>
+                <br>
+            </li>
+        </ol>
+    </ol>
+
+    <p style="font-size: x-medium; float:right;" ><i>Revision 3.0 Telstra M2M University Challenge 2014</i></p>
+
+</div> 
+
+</body>
+</html>
