@@ -16,7 +16,7 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify, make_response, Response
 from flask.ext.googlemaps import GoogleMaps, Map
-import json
+import json, os, sys
 from functools import wraps
 
 
@@ -25,7 +25,7 @@ GoogleMaps(app)
 
 # Load default config or override config from an environment variable, if it exists
 app.config.update(dict(
-    DATABASE='M2M.db',
+    DATABASE = sys.path[0]+'/M2M.db',
     DEBUG=True,
     SECRET_KEY='someRandomKey',
     USERNAME='m2m',
