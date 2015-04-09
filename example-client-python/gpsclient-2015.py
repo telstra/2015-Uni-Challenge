@@ -27,7 +27,6 @@ DELAY = 10 # Seconds. Delay between GPS fixes.
 uploadfreq = 6 #Sets upload rate = (DELAY*uploadfreq) after JSON post.
 uploadcounter = uploadfreq
 gpsd = None #seting the global variable
-#os.system('clear') #clear the terminal (optional)
 
 
 ##########################
@@ -61,9 +60,6 @@ def UploadJsonTelstraVM(targetUrl, latitude, longitude, timedateUTC, cpuID, disp
     #print "       DisplayString:", str(displayString), " ArbitraryText:", str(arbitraryText)
     #print "       Posting GPS coordinates lat:", str(latitude), "and long:", str(longitude)
     #print "       cpuID:", str(cpuID)
-    #postdata = json.dumps({"latitude": str(latitude), "longitude": str(longitude), "timestampUTC": str(timedateUTC),
-    #                "imei": str(imei), "imsi": str(imsi), "cpuID": str(cpuID),
-    #                "displayString": str(displayString), "arbitraryText": str(arbitraryText)})
     postdata = json.dumps({
                     "cpuID":str(cpuID),
                     "displayString": str(displayString),
@@ -91,11 +87,9 @@ def UploadJsonTelstraVM(targetUrl, latitude, longitude, timedateUTC, cpuID, disp
 ########################
 
 def getTimeUTC(r):
-    """Extract time from GPSLOC response and format for transmission to server"""
+    """Extract time from GPS response and format for transmission to server"""
     #print "Extracting time from response"
-    # Example Time: 2013 04 16 1 03:15:16 (GPS)
-    #z =  re.search('Time: (\d+) (\d+) (\d+) (\d+) ([\:\:\d]+)', r)
-    # Example Time: 1995-06-01T03:13:55.000Z
+    # Example Time: 2015-04-09T06:46:05.640Z
     z =  re.search('(\d+)-(\d+)-(\d+)T([\:\:\d]+)', r)
 
     if not z:
@@ -107,7 +101,7 @@ def getTimeUTC(r):
         dayUTC = z.group(3)
         timeUTC = z.group(4)
         timedateUTC = str(yearUTC) + "-" + str(monthUTC)  + "-" + str(dayUTC) + " " + str(timeUTC)
-        # Example timedateUTC = 2013-04-16 03:15:16
+        # Example timedateUTC = 2015-04-09 06:46:05
         return timedateUTC
 
 		
@@ -149,6 +143,7 @@ def main():
   global uploadcounter
   global uploadfreq
   global gpsp
+  print '[ -- ] Starting Telstra University Challenge GPS Client 2015'
   print '[ -- ] Creating GPS Poller Thread'
   gpsp = GpsPoller() # create the thread
   try:
@@ -158,30 +153,29 @@ def main():
       #os.system('clear') #optional
       latitude = gpsd.fix.latitude
       longitude = gpsd.fix.longitude
-      timedateUTC = gpsd.utc
+      timedateUTC = getTimeUTC(gpsd.utc)
       cpuID = GetCPUid()
       cpuTEMP = GetCPUtemp()
       print '----------------------------------------'
       print '[    ]', teamname, ' Time UTC:', timedateUTC
       print '[    ] CPU ID:', cpuID, ' CPU Temp:', cpuTEMP
       print '[    ] Latitude:', str(latitude), ' Longitude:', str(longitude), ' Altitude (m):', gpsd.fix.altitude
-      #print 'eps         ' , gpsd.fix.eps
-      #print 'epx         ' , gpsd.fix.epx
-      #print 'epv         ' , gpsd.fix.epv
-      #print 'ept         ' , gpsd.fix.ept
-      print '[    ] Speed (m/s):' , gpsd.fix.speed, ' Climb:', gpsd.fix.climb
-      #print 'track       ' , gpsd.fix.track
-      #print 'mode        ' , gpsd.fix.mode
+      #print '[    ] eps', gpsd.fix.eps
+      #print '[    ] epx', gpsd.fix.epx
+      #print '[    ] epv', gpsd.fix.epv
+      #print '[    ] ept', gpsd.fix.ept
+      print '[    ] Speed (m/s):', gpsd.fix.speed, ' Climb:', gpsd.fix.climb
+      print '[    ] Track', gpsd.fix.track
+      print '[    ] Mode', gpsd.fix.mode
       #print ' '
-      ##print 'sats        ' , gpsd.satellites
+      ##print '[    ] Sats', gpsd.satellites
       print '[    ] Satellites (total of', len(gpsd.satellites) , ' in view)'
       #for i in gpsd.satellites:
       #    print '\t', i
 
       if uploadcounter >= uploadfreq:
         if (str(latitude) == "nan") or (str(longitude) == "nan"):
-          # No GPS fix so nothing to upload
-          print '[ -- ] No GPS fix so nothing to upload'
+            print '[ -- ] No GPS fix so nothing to upload'
         else:
           #print '[ -- ] Upload Data' 
           try:
@@ -221,6 +215,17 @@ def main():
     print e.strerror
     traceback.print_exc(file=sys.stdout)
     print "****************************"
+    gpsp.running = False
+    gpsp.join(30) # wait for the thread to finish what it's doing
+    if gpsp.is_alive():
+        gpsp.run = False
+        print "Warning Timeout unable to join to gpsp thread"
+        # Reset the gpsd
+        os.system('sudo killall gpsd') 
+        time.sleep(1)
+        os.system('sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock')
+        time.sleep(1)
+    print "Done.\nExiting."
     sys.exit()
   except Exception as e:
     print " "
@@ -231,9 +236,16 @@ def main():
     print e
     traceback.print_exc(file=sys.stdout)
     print "******************"
-    print "Killing Thread..."
     gpsp.running = False
-    gpsp.join() # wait for the thread to finish what it's doing
+    gpsp.join(30) # wait for the thread to finish what it's doing
+    if gpsp.is_alive():
+        gpsp.run = False
+        print "Warning Timeout unable to join to gpsp thread"
+        # Reset the gpsd
+        os.system('sudo killall gpsd')
+        time.sleep(1)
+        os.system('sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock')
+        time.sleep(1)
     print "Done.\nExiting."
     sys.exit()
   except KeyboardInterrupt:
@@ -243,7 +255,15 @@ def main():
     print "******************************"
     print "Killing Thread..."
     gpsp.running = False
-    gpsp.join() # wait for the thread to finish what it's doing
+    gpsp.join(30) # wait for the thread to finish what it's doing
+    if gpsp.is_alive():
+        gpsp.run = False
+        print "Warning Timeout unable to join to gpsp thread"
+        # Reset the gpsd
+        os.system('sudo killall gpsd')
+        time.sleep(1)
+        os.system('sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock')
+        time.sleep(1)
     print "Done.\nExiting."
     sys.exit()
   except:
@@ -255,7 +275,15 @@ def main():
     print "*******************"
     print "Killing Thread..."
     gpsp.running = False
-    gpsp.join() # wait for the thread to finish what it's doing
+    gpsp.join(30) # wait for the thread to finish what it's doing
+    if gpsp.is_alive():
+        gpsp.run = False
+        print "Warning Timeout unable to join to gpsp thread"
+        # Reset the gpsd
+        os.system('sudo killall gpsd')
+        time.sleep(1)
+        os.system('sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock')
+        time.sleep(1)
     print "Done.\nExiting."
     sys.exit()
 

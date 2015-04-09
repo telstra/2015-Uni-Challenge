@@ -45,7 +45,7 @@ from cookielib import CookieJar
 # Global Variables #
 ####################
 
-APN = 'telstra.internet'  #Vaild settings are 'telstra.extranet' for pubic IP or 'telstra.internet' for private IP.
+APN = 'telstra.extranet'  #Vaild settings are 'telstra.extranet' for pubic IP or 'telstra.internet' for private IP.
 DHCP_Release_eth1 = 'sudo dhclient -r eth1'
 DHCP_Renew_eth1 = 'sudo dhclient -nw eth1'
 readIPeth1 = 'sudo ifconfig eth1'
@@ -169,8 +169,7 @@ def ModemIPchange(modemip):
                 iplist = "echo \"" + modemip + "\" >|~/.current_ip"
                 # Save IP address in file .current_ip
                 SendOS(iplist)
-                # Place code here if you want device to do something in response to IP change. Example send email.
-                UpdateDNS(modemip)
+                IPchangeAlert(modemip)
             else:
                 print "[ -- ] AC785 Modem IP address same as last acquired address", modemip
         else:
@@ -179,19 +178,30 @@ def ModemIPchange(modemip):
             iplist = "echo \"" + modemip + "\" >|~/.current_ip"
             # Save IP address in file .current_ip
             SendOS(iplist)
+            IPchangeAlert(modemip)
     else:
         # File .current_ip did not exist
         print "[ -- ] New eth1 IP address", modemip
         iplist = "echo \"" + modemip + "\" >|~/.current_ip"
         # Save IP address in file .current_ip
         SendOS(iplist)
+        IPchangeAlert(modemip)
+        
+
+def IPchangeAlert(modemip):
+    """
+    Send an alert to inform remote user that the external modem IP address has changed
+    This is recommended if external remote ssh access to the pi is required using telstra.extranet APN
+    """
+    # Place code here if you want device to do something in response to IP change. 
+    # Example send email or update Dynamic DNS service.
+
 
 def privateIP(currentIP):
     """
     Checks if current IP is in the private IP range or the public IP range
     Returns True if in private IP range or False if in public IP range
     """
-
     #Match against private IP ranges
     if re.search('10\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})', currentIP):
         print "[ -- ] Private IP using 10.x.x.x range"
@@ -307,7 +317,7 @@ def ModemPdpDisconnect():
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ OK ] PDP Disconnect Sucessful"
+        print "[ -- ] PDP Disconnect Request Sent"
     else:
         print "[FAIL] PDP Disconnect Error", UploadResult
     #print response.read()
@@ -329,7 +339,7 @@ def ModemPdpConnect():
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ OK ] PDP Connect Sucessful"
+        print "[ -- ] PDP Connect Request Sent"
     else:
         print "[FAIL] PDP Connect Error", UploadResult
     #print response.read()
@@ -352,7 +362,7 @@ def ModemDeleateProfile(id):
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ OK ] Deleted APN Profile", str(id)
+        print "[ -- ] Cleared APN Profile", str(id)
     else:
         print "[FAIL] Unable to Delete APN Profile", str(id)
     #print response.read()
@@ -378,7 +388,7 @@ def ModemPdpSetAPN(id):
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ OK ] Set APN", str(id)
+        print "[ -- ] Set APN", str(id)
         ModemDefaultProfile(id + 1) #+1 offset due to webpage having default telstra.internet profile that can not be deleted
     else:
         print "[FAIL] Unable to set APN", str(id)
@@ -401,35 +411,12 @@ def ModemDefaultProfile(id):
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ OK ] Set Defualt to Profile", str(id)
+        print "[ -- ] Set Defualt to Profile", str(id)
     else:
         print "[FAIL] Unable to set default to profile", str(id)
     #print response.read()
     time.sleep(2)
     return UploadResult
-
-
-def UpdateDNS(dnsIP):
-    """Update Dynamic DNS listing with NOIP"""
-    #print "[ -- ] Setting AC785 Modem Default Profile to", str(id)
-    targetUrl = 'http://essery:Gemini1@dynupdate.no-ip.com/nic/update?hostname=telstra-pi.ddns.net&myip='+dnsIP
-    postdata = ""
-    headers = {"User-Agent": "RaspberryPiUpdateClient/1.0 todd_essery@hotmail.com"}
-    #print "     URL: ", targetUrl
-    #print "     Headers: ", headers
-    #print "     Body: ", postdata
-    req = urllib2.Request(targetUrl, postdata, headers)
-    req.get_method = lambda: 'GET'
-    response = urllib2.urlopen(req)
-    UploadResult = response.getcode()
-    if UploadResult == 200:
-        print "[ OK ] Set Defualt to Profile", str(id)
-    else:
-        print "[FAIL] Unable to set default to profile", str(id)
-    print response.read()
-    time.sleep(2)
-    return UploadResult
-
 
 
 class ExitProgram(Exception):
