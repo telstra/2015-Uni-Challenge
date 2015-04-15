@@ -154,13 +154,13 @@ def show_map():
 # POST: accepts positions details sent from the client in JSON format, and inserts them into the SQLite db.
 @app.route('/api/position', methods=['GET', 'POST', 'OPTIONS'])
 def add_record():
-    keys = ('imei','imsi','time_stamp','cpu_ID','display_string','lat', 'lon')
+    keys = ('cpu_ID','display_string','lat', 'lon', 'arbitraryText')
     db = get_db()
     if request.method == 'POST':
         jsonData = request.get_json(force=True)
         print "REQ DATA", jsonData
         db.execute('insert into records (imei, imsi, time_stamp, cpu_ID, display_string, lat, lon) values (?, ?, ?, ?, ?, ?, ?)',
-        [jsonData['imei'], jsonData['imsi'],jsonData['timestampUTC'], jsonData['cpuID'],jsonData['displayString'], jsonData['latitude'], jsonData['longitude']])
+        [jsonData['cpuID'],filter.clean(jsonData['displayString']), jsonData['latitude'], jsonData['longitude'] ,jsonData['arbitraryText']])
         db.commit()
         return '200 OK'
     
