@@ -102,7 +102,7 @@ function initialize() {
 	$.ajax({
 		type: "GET",
 		//url: "http://example.innovation.telstra.com/api/position",
-		url: "http://x.x.x.x/api/position",
+		url: "http://58.162.144.26/api/position",
 		async: false,
      	jsonpCallback: 'jsonCallback',
 		contentType: "application/json",
@@ -221,11 +221,11 @@ function addLegend(map) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="http://example.innovation.telstra.com/">M2M@telstra</a>
+          <a class="brand" href="http://tuc.innovation.telstra.com/">M2M@telstra</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-			  <li><a href="http://example.innovation.telstra.com/">Getting started</a></li>
-			  <li><a href="http://example.innovation.telstra.com/#section8.5">FAQ</a></li>
+			  <li><a href="http://tuc.innovation.telstra.com/">Getting started</a></li>
+			  <li><a href="http://tuc.innovation.telstra.com/#section8.5">FAQ</a></li>
 			  <li><a href="{{ url_for('show_map_unique_cpu') }}">Map</a></li>
 			  <li><a href="{{ url_for('show_map') }}">Basic Map</a></li>
 	          <li><a href="{{ url_for('show_records') }}">Records</a></li>

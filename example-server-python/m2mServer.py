@@ -16,7 +16,7 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify, make_response, Response
 from flask.ext.googlemaps import GoogleMaps, Map
-import json, os, sys
+import json, os, sys, datetime
 from functools import wraps
 
 
@@ -107,7 +107,7 @@ def show_records():
     nice human readable list. 
     """
     db = get_db()
-    cur = db.execute('select imei, imsi, time_stamp, cpu_ID, display_string, lat, lon from records order by id desc')
+    cur = db.execute('select cpu_ID, display_string, lat, lon, arbitraryText from records order by id desc')
     records = cur.fetchall()
     return render_template('show_records.html', records=records)
 
@@ -117,7 +117,7 @@ def show_gsg():
     nice human readable list. 
     """
     db = get_db()
-    cur = db.execute('select imei, imsi, time_stamp, cpu_ID, display_string, lat, lon from records order by id desc')
+    cur = db.execute('select cpu_ID, display_string, lat, lon, arbitraryText from records order by id desc')
     records = cur.fetchall()
     return render_template('show_records.html', records=records)
 
@@ -129,13 +129,13 @@ def show_map_unique_cpu():
 @app.route('/map_python')
 def show_map():
     db = get_db()
-    cur = db.execute('select imei, imsi, time_stamp, cpu_ID, display_string, lat, lon from records order by id desc')
+    cur = db.execute('select cpu_ID, display_string, lat, lon, arbitraryText from records order by id desc')
     records = cur.fetchall()
     
     # create list of markers from the lat/lng values for each records in the DB
     markerList = []
     for item in records:
-        markerList.append((float(item[5]), float(item[6])))
+        markerList.append((float(item[2]), float(item[3])))
     
     # create the map object
     mymap = Map(
@@ -159,13 +159,13 @@ def add_record():
     if request.method == 'POST':
         jsonData = request.get_json(force=True)
         print "REQ DATA", jsonData
-        db.execute('insert into records (imei, imsi, time_stamp, cpu_ID, display_string, lat, lon) values (?, ?, ?, ?, ?, ?, ?)',
-        [jsonData['cpuID'],filter.clean(jsonData['displayString']), jsonData['latitude'], jsonData['longitude'] ,jsonData['arbitraryText']])
+        db.execute('insert into records (cpu_ID, display_string, lat, lon, arbitraryText, time_stamp) values (?, ?, ?, ?, ?, ?)',
+        [jsonData['cpuID'],jsonData['displayString'], jsonData['latitude'], jsonData['longitude'] ,jsonData['arbitraryText'], datetime.datetime.now()])
         db.commit()
         return '200 OK'
     
     if request.method == 'GET':
-        cur = db.execute('select imei, imsi, time_stamp, cpu_ID, display_string, lat, lon from records order by id desc')
+        cur = db.execute('select cpu_ID, display_string, lat, lon, arbitraryText from records order by id desc')
         records = cur.fetchall()
         
         if len(records) > 0:
@@ -188,8 +188,8 @@ def add_record():
 
 
 if __name__ == '__main__':
-    # init_db() 
-	# Uncommenting the above line will make the server reinitialise the db each time it's run,
+    #init_db() 
+    # Uncommenting the above line will make the server reinitialise the db each time it's run,
     # removing any previous records, leave commented for a persistent DB
     
     app.run(host='0.0.0.0', port=80)  # Make server publicly available on port 80
