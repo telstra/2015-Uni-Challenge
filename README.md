@@ -1,3 +1,3 @@
-Telstra 2014 M2M Uni Challenge
-==============================
+Telstra University Challenge 2015
+=================================
 
