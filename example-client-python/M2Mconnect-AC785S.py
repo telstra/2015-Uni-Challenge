@@ -362,7 +362,8 @@ def ModemDeleateProfile(id):
     response = urllib2.urlopen(req)
     UploadResult = response.getcode()
     if UploadResult == 200:
-        print "[ -- ] Cleared APN Profile", str(id)
+        #print "[ -- ] Cleared APN Profile", str(id)
+		time.sleep(0)
     else:
         print "[FAIL] Unable to Delete APN Profile", str(id)
     #print response.read()
@@ -498,6 +499,7 @@ def main():
                                     backofftimer = backoff
                                     raise ExitProgram()
                             else:
+                                ModemPdpSetAPN(1)
                                 ModemPdpConnect()
                                 returnedIP = ModemIPcheck()
                                 if returnedIP is not None:
